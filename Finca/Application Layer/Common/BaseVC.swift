@@ -1,0 +1,327 @@
+//
+//  BaseVC.swift
+//  Finca
+//
+//  Created by anjali on 24/05/19.
+//  Copyright © 2019 anjali. All rights reserved.
+//
+
+import UIKit
+import Toast_Swift
+class BaseVC: UIViewController , UITextFieldDelegate , SWRevealViewControllerDelegate{
+    var PView : NVActivityIndicatorView!
+    var viewSub : UIView!
+    var overlyView = UIView()
+    var successStyle = ToastStyle()
+    var failureStyle = ToastStyle()
+    var warningStyle = ToastStyle()
+    
+    public let refreshControl = UIRefreshControl()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        successStyle.messageColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        successStyle.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
+        
+        failureStyle.messageColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        failureStyle.backgroundColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+        
+        warningStyle.messageColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        warningStyle.backgroundColor = #colorLiteral(red: 0.9137254902, green: 0.6784313725, blue: 0.1921568627, alpha: 1)
+        refreshControl.tintColor = ColorConstant.primaryColor
+        initInterNet()
+        // Do any additional setup after loading the view.
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
+//        self.view.addGestureRecognizer(tapGesture)
+        
+        
+        
+    }
+    
+    func initInterNet() {
+        NotificationCenter.default.addObserver(self, selector: #selector(statusManager), name: .flagsChanged, object: Network.reachability)
+    }
+    
+    @objc func statusManager(_ notification: Notification) {
+        updateUserInterface()
+    }
+    
+    func updateUserInterface() {
+        guard let status = Network.reachability?.status else { return }
+        switch status {
+        case .unreachable:
+            //  showAlertMessage(title: "No Interneet", msg: "Make sure your interner is on")
+            let vc = storyboard?.instantiateViewController(withIdentifier: "idNoNetworkVC") as! NoNetworkVC
+            self.present(vc, animated: true, completion: nil)
+            
+            
+            break
+            
+        case .wifi:
+            onNetconnected()
+        case .wwan:
+            onNetconnected()
+            print("")
+        }
+        
+        
+        
+    }
+    
+    func onNetconnected(){
+        
+        
+    }
+    
+    
+    func addRefreshControlTo(collectionView : UICollectionView){
+        if #available(iOS 10.0, *) {
+            collectionView.refreshControl = refreshControl
+        } else {
+            collectionView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(pullToRefreshData(_:)), for: .valueChanged)
+    }
+    
+    func addRefreshControlTo(tableView:UITableView){
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        } else {
+            tableView.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(pullToRefreshData(_:)), for: .valueChanged)
+        
+    }
+    
+    @objc func pullToRefreshData(_ sender:Any){
+        
+        fetchNewDataOnRefresh()
+        
+    }
+    func hidePull() {
+        refreshControl.endRefreshing()
+    }
+    func fetchNewDataOnRefresh(){
+        
+    }
+    
+    func doInintialRevelController(bMenu:UIButton) {
+        revealViewController().delegate = self
+        if self.revealViewController() != nil {
+            bMenu.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
+    }
+    
+    func revealController(_ revealController: SWRevealViewController!, willMoveTo position: FrontViewPosition) {
+        
+        if revealController.frontViewPosition == FrontViewPosition.left     // if it not statisfy try this --> if
+        {
+            overlyView.frame = CGRect(x: 0, y: 60, width: self.view.frame.size.width, height: self.view.frame.size.height)
+            //overlyView.backgroundColor = UIColor.red
+            self.view.addSubview(overlyView)
+            //self.view.isUserInteractionEnabled = false
+        }
+        else
+        {
+            overlyView.removeFromSuperview()
+            //self.view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func hideKeyBoardHideOutSideTouch() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    // strrt done button keyborad
+    func doneButtonOnKeyboard(textField: UITextField){
+        let kb = UIToolbar()
+        kb.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneClickKeyboard))
+        kb.items = [doneButton]
+        textField.inputAccessoryView = kb
+    }
+    
+  
+    
+    @objc func doneClickKeyboard(){
+        view.endEditing(true)
+    }
+
+    //end
+    func isKeyPresentInUserDefaults(key: String) -> Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
+    }
+    func doGetLocalDataUser()->LoginResponse{
+        var userLocalData : LoginResponse? = nil
+        if let data = UserDefaults.standard.data(forKey: StringConstants.KEY_LOGIN_DATA), let decoded = try? JSONDecoder().decode(LoginResponse.self, from: data){
+            userLocalData = decoded
+        }
+        return userLocalData!
+    }
+    
+    func closeKeyboard() {
+        view.endEditing(true)
+    }
+    
+    //star
+    
+    //Todo show alert for messsage only
+    func showAlertMessage(title:String, msg:String) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            // self.onClickDone()
+        }))
+        self.present(alert, animated: true)
+    }
+    
+    //Todo show alert for messsage only with click
+    func showAlertMessageWithClick(title:String, msg:String) {
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            alert.dismiss(animated: true, completion: nil)
+            self.onClickDone()
+        }))
+        
+        
+        self.present(alert, animated: true)
+    }
+    func onClickDone() {
+        
+    }
+    //end
+    
+    
+    func showProgress() {
+        viewSub = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
+        viewSub.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        //    myView.frame.height/2
+        viewSub.layer.cornerRadius = 20
+        viewSub.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        //    myView.frame.height/2
+        let frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+        
+        PView = NVActivityIndicatorView(frame: frame, type: NVActivityIndicatorType(rawValue: 32), color: ColorConstant.colorAccent,  padding: 15)
+        PView.center = viewSub.center
+        PView.backgroundColor = UIColor.white
+        PView.layer.cornerRadius = 10
+        PView.layer.shadowOpacity = 0.5
+        PView.layer.masksToBounds = false
+        PView.layer.shadowOffset = CGSize.zero
+        viewSub.addSubview(PView)
+        PView.startAnimating()
+        self.view.addSubview(viewSub)
+        
+    }
+    func popToHomeController(){
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: HomeVC.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                break
+            }
+        }
+    }
+    func hideProgress() {
+        PView.stopAnimating()
+        viewSub.removeFromSuperview()
+    }
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent // .default
+    }
+    
+    
+    func doPopBAck(){
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func changeButtonImageColor(btn:UIButton , image:String,color:UIColor) {
+        
+        let origImage = UIImage(named: image)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        btn.setImage(tintedImage, for: .normal)
+        btn.tintColor = color
+    }
+    
+    func convertImageTobase64(imageView:UIImageView) -> String {
+        let imageData = imageView.image?.jpegData(compressionQuality: 0.25)
+       // let imageData = UIImageJPEGRepresentation(imageView.image!,0.25)
+        let strBase64 = imageData!.base64EncodedString(options: .lineLength64Characters)
+        
+        return strBase64
+    }
+    
+    func isValidEmail(email:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: email)
+    }
+    
+   
+    
+    func getChatCount() -> String{
+        if isKeyPresentInUserDefaults(key: StringConstants.CHAT_STATUS) {
+            return UserDefaults.standard.string(forKey: StringConstants.CHAT_STATUS)!
+        } else {
+            return  "0"
+        }
+        
+    }
+    func getNotiCount() -> String{
+        if isKeyPresentInUserDefaults(key: StringConstants.READ_STATUS) {
+               return UserDefaults.standard.string(forKey: StringConstants.READ_STATUS)!
+        } else {
+           return  "0"
+        }
+     
+    }
+    
+    func toast(message:String!,type:Int!){
+        switch (type) {
+        case 0: //success toast
+             self.view.makeToast(message,duration:2,position:.bottom,style:self.successStyle)
+            break;
+        case 1: //faliure toast
+             self.view.makeToast(message,duration:2,position:.bottom,style:self.failureStyle)
+             break;
+        case 2: //faliure toast
+            self.view.makeToast(message,duration:2,position:.bottom,style:self.warningStyle)
+            break;
+        default:
+            break;
+        }
+    }
+    
+    
+    func baseUrl() -> String {
+    var url = ""
+        
+        if isKeyPresentInUserDefaults(key:  StringConstants.KEY_BASE_URL) {
+            url = UserDefaults.standard.string(forKey: StringConstants.KEY_BASE_URL)! + "resident_api/"
+        }
+        
+        return url
+    }
+    func apiKey() -> String {
+        var url = ""
+        
+         if isKeyPresentInUserDefaults(key:  StringConstants.KEY_API_KEY) {
+            url = UserDefaults.standard.string(forKey: StringConstants.KEY_API_KEY)!
+        }
+        
+        return url
+    }
+    
+    
+    
+    
+}
