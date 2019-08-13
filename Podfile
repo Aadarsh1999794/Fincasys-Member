@@ -20,6 +20,6 @@ target 'Finca' do
  pod 'Firebase/Core'
  pod 'Firebase/Messaging'
  pod 'Toast-Swift', '~> 5.0.0'
-
+ pod 'CenteredCollectionView'
  # pod 'PayUmoney_PnP'
 end

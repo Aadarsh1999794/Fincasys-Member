@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import XLPagerTabStrip
 class ChangePasswordVC: BaseVC {
 
     @IBOutlet weak var tfOldPassword: ACFloatingTextfield!
@@ -97,5 +97,10 @@ class ChangePasswordVC: BaseVC {
        UserDefaults.standard.set(nil, forKey: StringConstants.KEY_LOGIN)
         
         Utils.setHomeRootLocation()
+    }
+}
+extension ChangePasswordVC : IndicatorInfoProvider{
+    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
+        return "Change Password"
     }
 }

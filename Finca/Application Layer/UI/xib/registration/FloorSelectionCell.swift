@@ -20,9 +20,11 @@ class FloorSelectionCell: UICollectionViewCell {
     
     var isConversoin = false
     
+    @IBOutlet weak var viewMain: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        lbTitle.layer.masksToBounds = true
         cvData.delegate = self
         cvData.dataSource = self
         cvData.alwaysBounceHorizontal = false
@@ -33,6 +35,21 @@ class FloorSelectionCell: UICollectionViewCell {
         let inb2 = UINib(nibName: itemCell2, bundle: nil)
         cvData.register(inb2, forCellWithReuseIdentifier: itemCell2)
         
+        let yourViewBorder = CAShapeLayer()
+        yourViewBorder.strokeColor = ColorConstant.primaryColor.cgColor
+        yourViewBorder.lineWidth = 2
+        yourViewBorder.lineDashPattern = [7, 3]
+        yourViewBorder.frame = viewMain.bounds
+        yourViewBorder.fillColor = nil
+        yourViewBorder.path = UIBezierPath(rect: viewMain.bounds).cgPath
+//        viewMain.layer.masksToBounds = true
+        viewMain.layer.addSublayer(yourViewBorder)
+       
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
     }
     
     func doSetData(units:[UnitModel],isMember:Bool) {
@@ -62,6 +79,28 @@ class FloorSelectionCell: UICollectionViewCell {
         cvData.reloadData()
     }
     
+    
+
+}
+extension UIView {
+    func addDashedBorder() {
+        let color = ColorConstant.primaryColor.cgColor
+        
+        let shapeLayer:CAShapeLayer = CAShapeLayer()
+        let frameSize = self.bounds.size
+        let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
+        
+        shapeLayer.bounds = shapeRect
+        shapeLayer.position = CGPoint(x: frameSize.width/2, y: frameSize.height/2)
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = color
+        shapeLayer.lineWidth = 2
+        shapeLayer.lineJoin = CAShapeLayerLineJoin.round
+        shapeLayer.lineDashPattern = [6,3]
+        shapeLayer.path = UIBezierPath(roundedRect: shapeRect, cornerRadius: 5).cgPath
+        
+        self.layer.addSublayer(shapeLayer)
+    }
 }
 
 extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -74,7 +113,7 @@ extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
+       
         
         if isMember {
             
@@ -103,13 +142,8 @@ extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSo
                 // close
                 cell.viewMain.layer.backgroundColor = ColorConstant.colorClose.cgColor
             }
-            
-            
-            
             cell.lbTitle.text = unitsMember[indexPath.row].unit_name
             cell.lbName.text = unitsMember[indexPath.row].user_first_name
-            
-            
            if isConversoin {
             
             if unitsMember[indexPath.row].chat_status != "0" {

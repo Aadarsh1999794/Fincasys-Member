@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import XLPagerTabStrip
 
 struct ResponseAllPayment:Codable {
     var message: String!//  "message" : "Get success.",
@@ -16,7 +17,7 @@ struct ResponseAllPayment:Codable {
     var maintenance: String!//   "maintenance" : "20.00"
 }
 
-class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class ProfileVC:ButtonBarPagerTabStripViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate {
     @IBOutlet weak var bMenu: UIButton!
     @IBOutlet weak var ivProfile: UIImageView!
     
@@ -25,36 +26,31 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
     @IBOutlet weak var lbUnpaidBill: UILabel!
     @IBOutlet weak var lbDue: UILabel!
     
-    @IBOutlet weak var lbAboutUS: UILabel!
+    
     @IBOutlet weak var switchOwner: UISwitch!
     @IBOutlet weak var switchApartment: UISwitch!
     
-    @IBOutlet weak var switchProfile: UISwitch!
-    
-    @IBOutlet weak var tfName: ACFloatingTextfield!
-    @IBOutlet weak var tfLastName: ACFloatingTextfield!
-    @IBOutlet weak var tfEmail: ACFloatingTextfield!
-    @IBOutlet weak var tfMobile: ACFloatingTextfield!
-    @IBOutlet weak var bMember: UIButton!
-    @IBOutlet weak var bNumber: UIButton!
-    @IBOutlet weak var cvNumber: UICollectionView!
-    @IBOutlet weak var cvMember: UICollectionView!
+    //    @IBOutlet weak var switchProfile: UISwitch!
+    //
+    //    @IBOutlet weak var tfName: ACFloatingTextfield!
+    //    @IBOutlet weak var tfLastName: ACFloatingTextfield!
+    //    @IBOutlet weak var tfEmail: ACFloatingTextfield!
+    //    @IBOutlet weak var tfMobile: ACFloatingTextfield!
     
     @IBOutlet weak var viewMaintance: UIView!
-    @IBOutlet weak var heightConstrainstMember: NSLayoutConstraint!
-    @IBOutlet weak var heightConstrainstNumber: NSLayoutConstraint!
+ 
     
     @IBOutlet weak var viewChatCount: UIView!
     @IBOutlet weak var lbChatCount: UILabel!
     @IBOutlet weak var viewNotiCount: UIView!
     @IBOutlet weak var lbNotiCount: UILabel!
     
-    @IBOutlet weak var ivUpDoenArrow: UIImageView!
+   
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var bSave: UIButton!
     
-    @IBOutlet weak var viewEditProfile: UIView!
+    
     var item = "InfoFamalyMemberCell"
     var  heightCVFamily = 0.0
     var  heightCVEmergancy = 0.0
@@ -70,92 +66,68 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
     
     @IBOutlet weak var conHeightForProfile: NSLayoutConstraint!
     
+    let bVC = BaseVC()
+    
     override func viewDidLoad() {
+        
+        settings.style.buttonBarBackgroundColor = .clear
+        settings.style.buttonBarItemBackgroundColor = .clear
+        settings.style.selectedBarBackgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        settings.style.buttonBarItemFont = .systemFont(ofSize: 15)
+        settings.style.selectedBarHeight = 3.0
+        settings.style.buttonBarMinimumLineSpacing = 0
+        settings.style.buttonBarItemTitleColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        settings.style.buttonBarItemsShouldFillAvailableWidth = true
+        settings.style.buttonBarLeftContentInset = 0
+        settings.style.buttonBarRightContentInset = 0
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        doInintialRevelController(bMenu: bMenu)
+        
+        //        Do any additional setup after loading the view.
+        //        bVC.doInintialRevelController(bMenu: bMenu)
+        revealViewController().delegate = self
+        if self.revealViewController() != nil {
+            bMenu.addTarget(self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
         switchApartment.addTarget(self, action: #selector(switchChanged), for: UIControl.Event.valueChanged)
         switchOwner.addTarget(self, action: #selector(switchChangedRenter), for: UIControl.Event.valueChanged)
         
-        switchProfile.addTarget(self, action: #selector(switchChangedProfile), for: UIControl.Event.valueChanged)
         
-       // initUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden), name: UIResponder.keyboardDidHideNotification, object: nil)
-        
-        addInputAccessoryForTextFields(textFields: [tfName,tfLastName,tfEmail,tfMobile], dismissable: true, previousNextable: true)
-       // switchOwner.layer.borderColor = UIColor(named: "ColorPrimary")?.cgColor
-      //  switchApartment.layer.borderColor = UIColor(named: "ColorPrimary")?.cgColor
+        // switchOwner.layer.borderColor = UIColor(named: "ColorPrimary")?.cgColor
+        //  switchApartment.layer.borderColor = UIColor(named: "ColorPrimary")?.cgColor
         
         //  tfMobile.isEnabled = false
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden), name: UIResponder.keyboardDidHideNotification, object: nil)
         
         
-          tfMobile.isEnabled = false
-    }
-    
-    func hideProfileView() {
         
-        conHeightForProfile.constant = 60.0
-        tfName.isHidden = true
-         tfEmail.isHidden = true
-         tfMobile.isHidden = true
-          tfLastName.isHidden = true
-           viewEditProfile.isHidden = true
-    }
-    func showProfileView() {
-        
-        conHeightForProfile.constant = 240.0
-        tfName.isHidden = false
-        tfEmail.isHidden = false
-        tfMobile.isHidden = false
-        tfLastName.isHidden = false
-        viewEditProfile.isHidden = false
-        
-    }
-    
-    
-    @IBAction func onClickUpDown(_ sender: Any) {
-        if isHideAndShow {
-            isHideAndShow = false
-            showProfileView()
-        } else {
-             isHideAndShow = true
-            hideProfileView()
+        changeCurrentIndexProgressive = { [weak self](oldCell: ButtonBarViewCell?, newCell: ButtonBarViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+            guard changeCurrentIndex == true else { return }
+            oldCell?.label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+            newCell?.label.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         }
-        
-        
     }
-    @objc func switchChangedProfile(mySwitch: UISwitch) {
-        let value = mySwitch.isOn
-        // Do something
-        print(value)
-        
-        if value {
-            switchProfile.thumbTintColor  = ColorConstant.green400
-              switchProfile.tintColor = ColorConstant.green400
-            doSwitchToProfile(public_mobile: "0")
-        } else {
-           switchProfile.thumbTintColor  = ColorConstant.red500
-            switchProfile.tintColor = ColorConstant.red500
-            doSwitchToProfile(public_mobile: "1")
-        }
-    // switchProfile.thumbTintColor
-        
+    
+    override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
+        let child_1 = self.storyboard?.instantiateViewController(withIdentifier: "idProfilePersonalDetailVC")as! ProfilePersonalDetailVC
+        //        child_1.loadView()
+        let child_2 = self.storyboard?.instantiateViewController(withIdentifier: "idProfileprofessionalDetails")as! ProfileprofessionalDetails
+        let child_3 = self.storyboard?.instantiateViewController(withIdentifier: "idChangePasswordVC")as! ChangePasswordVC
+        //                child_2.loadView()
+        return [child_1,child_2,child_3]
     }
     
     @objc func switchChanged(mySwitch: UISwitch) {
         let value = mySwitch.isOn
         // Do something
-        
-        
-        
         if value {
             //
             doCallSwichApartment(unit_status: "5")
         } else {
-            if doGetLocalDataUser().user_type == "0" {
+            if bVC.doGetLocalDataUser().user_type == "0" {
                 //owner
                 doCallSwichApartment(unit_status: "1")
                 
@@ -179,8 +151,6 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
             confirm(isOnwer: false)
             
         }
-        
-        
     }
     
     func confirm(isOnwer:Bool){
@@ -193,7 +163,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         
         refreshAlert.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (action: UIAlertAction!) in
             
-            if self.doGetLocalDataUser().user_type == "0" {
+            if self.bVC.doGetLocalDataUser().user_type == "0" {
                 //owner
                 self.switchOwner.isOn = false
                 
@@ -223,7 +193,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         }
         
         
-       
+        
     }
     
     func  initUI() {
@@ -231,30 +201,22 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         
         Utils.setRoundImageWithBorder(imageView: ivProfile, color: UIColor.red)
         
-        Utils.setImageFromUrl(imageView: ivProfile, urlString: doGetLocalDataUser().user_profile_pic)
+        Utils.setImageFromUrl(imageView: ivProfile, urlString: bVC.doGetLocalDataUser().user_profile_pic)
         
-        lbResidentNumber.text = doGetLocalDataUser().block_name + "-" + doGetLocalDataUser().unit_name
+        lbResidentNumber.text = bVC.doGetLocalDataUser().block_name + "-" + bVC.doGetLocalDataUser().unit_name
         
-        tfName.text = doGetLocalDataUser().user_first_name
-        tfLastName.text = doGetLocalDataUser().user_last_name
-        tfMobile.text = doGetLocalDataUser().user_mobile
-        tfEmail.text = doGetLocalDataUser().user_email
         
-        if doGetLocalDataUser().about_business != nil {
-              lbAboutUS.text = doGetLocalDataUser().about_business
-        }
-      
-        
-        tfName.delegate = self
-        tfLastName.delegate = self
-        tfEmail.delegate = self
-        tfMobile.delegate = self
         
        
         
-      //  print("doGetLocalDataUser().user_type" , doGetLocalDataUser().user_type)
         
-        if doGetLocalDataUser().user_type == "0" {
+        
+        
+        
+        
+        //  print("doGetLocalDataUser().user_type" , doGetLocalDataUser().user_type)
+        
+        if bVC.doGetLocalDataUser().user_type == "0" {
             //owner
             switchOwner.isOn = false
             
@@ -264,80 +226,74 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
             
         }
         
-        if doGetLocalDataUser().unit_status == "5" {
+        if bVC.doGetLocalDataUser().unit_status == "5" {
             switchApartment.isOn = true
         } else {
             switchApartment.isOn = false
         }
         
-        doDisbleUI()
+        
         doMaintence()
-        hideProfileView()
-        cvMember.delegate = self
-        cvMember.dataSource = self
+//        hideProfileView()
+//        cvMember.delegate = self
+//        cvMember.dataSource = self
         
-        let inbFloor = UINib(nibName: item, bundle: nil)
-        cvMember.register(inbFloor, forCellWithReuseIdentifier: item)
+//        let inbFloor = UINib(nibName: item, bundle: nil)
+//        cvMember.register(inbFloor, forCellWithReuseIdentifier: item)
         
-        cvNumber.delegate = self
-        cvNumber.dataSource = self
-        cvNumber.register(inbFloor, forCellWithReuseIdentifier: item)
+//        cvNumber.delegate = self
+//        cvNumber.dataSource = self
+//        cvNumber.register(inbFloor, forCellWithReuseIden tifier: item)
         
         heightCVFamily = 0.0
         heightCVEmergancy = 0.0
         
-        heightConstrainstMember.constant = CGFloat(heightCVFamily)
-        heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
+//        heightConstrainstMember.constant = CGFloat(heightCVFamily)
+//        heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
         
-        if member.count > 0{
-            member.removeAll()
-            cvMember.reloadData()
-        }
-        if emergency.count > 0{
-            emergency.removeAll()
-            cvNumber.reloadData()
-        }
-        
-        
-        if doGetLocalDataUser().member.count > 0 {
-            member.append(contentsOf: doGetLocalDataUser().member)
-            cvMember.reloadData()
-            heightCVFamily =  heightCVFamily + (Double(doGetLocalDataUser().member.count) * 50.0)
-            
-            heightConstrainstMember.constant = CGFloat(heightCVFamily)
-        }
-        
-        if doGetLocalDataUser().emergency.count > 0 {
-            emergency.append(contentsOf: doGetLocalDataUser().emergency)
-            cvNumber.reloadData()
-            heightCVEmergancy =  heightCVEmergancy   + (Double(doGetLocalDataUser().emergency.count) * 50.0)
-            heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
-        }
+//        if member.count > 0{
+//            member.removeAll()
+//            cvMember.reloadData()
+//        }
+//        if emergency.count > 0{
+//            emergency.removeAll()
+//            cvNumber.reloadData()
+//        }
+//        
+//        
+//        if bVC.doGetLocalDataUser().member.count > 0 {
+//            member.append(contentsOf: bVC.doGetLocalDataUser().member)
+//            cvMember.reloadData()
+//            heightCVFamily =  heightCVFamily + (Double(bVC.doGetLocalDataUser().member.count) * 50.0)
+//            
+//            heightConstrainstMember.constant = CGFloat(heightCVFamily)
+//        }
+//        
+//        if bVC.doGetLocalDataUser().emergency.count > 0 {
+//            emergency.append(contentsOf: bVC.doGetLocalDataUser().emergency)
+//            cvNumber.reloadData()
+//            heightCVEmergancy =  heightCVEmergancy   + (Double(bVC.doGetLocalDataUser().emergency.count) * 50.0)
+//            heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
+//        }
         
         
     }
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return view.endEditing(true)
     }
     
-    @IBAction func onClickCahngePassword(_ sender: Any) {
-        let destiController = self.storyboard!.instantiateViewController(withIdentifier: "idChangePasswordVC") as! ChangePasswordVC
-        self.navigationController?.pushViewController(destiController, animated: true)
-        
-    }
     @IBAction func onClickSave(_ sender: Any) {
         doSubmitData()
     }
     
     func doMaintence() {
-        showProgress()
+        bVC.showProgress()
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
-        let params = ["key":apiKey(),
+        let params = ["key":bVC.apiKey(),
                       "userDetail":"userDetail",
-                      "unit_id":doGetLocalDataUser().unit_id!,
-                      "society_id":doGetLocalDataUser().society_id!]
+                      "unit_id":bVC.doGetLocalDataUser().unit_id!,
+                      "society_id":bVC.doGetLocalDataUser().society_id!]
         
         
         print("param" , params)
@@ -346,7 +302,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         
         
         requrest.requestPost(serviceName: ServiceNameConstants.getUserPaymentData, parameters: params) { (json, error) in
-            self.hideProgress()
+            self.bVC.hideProgress()
             if json != nil {
                 
                 do {
@@ -361,7 +317,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
                         
                     }else {
                         self.viewMaintance.isHidden = true
-                        self.showAlertMessage(title: "Alert", msg: response.message)
+                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -371,49 +327,50 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         
     }
     
-    func doDisbleUI() {
-        tfName.textColor = UIColor(named: "grey_60")
-        tfLastName.textColor = UIColor(named: "grey_60")
-        tfMobile.textColor = UIColor(named: "grey_60")
-        tfEmail.textColor = UIColor(named: "grey_60")
-        
-        bMember.isHidden = true
-        bNumber.isHidden = true
-        tfName.isEnabled = false
-        tfLastName.isEnabled = false
-        tfEmail.isEnabled = false
-     //   tfMobile.isEnabled = false
-         bSave.isHidden = true
-    }
-    func doEnsbleUI() {
-        tfName.textColor = UIColor.black
-        tfLastName.textColor = UIColor.black
-        tfMobile.textColor = UIColor.black
-        tfEmail.textColor = UIColor.black
-        
-        bMember.isHidden = false
-        bNumber.isHidden = false
-        
-        tfName.isEnabled = true
-        tfLastName.isEnabled = true
-        tfEmail.isEnabled = true
-        
-        bSave.isHidden = false
-
-       // tfMobile.isEnabled = true
-    }
+    //    func doDisbleUI() {
+    //        tfName.textColor = UIColor(named: "grey_60")
+    //        tfLastName.textColor = UIColor(named: "grey_60")
+    //        tfMobile.textColor = UIColor(named: "grey_60")
+    //        tfEmail.textColor = UIColor(named: "grey_60")
+    //
+    //        bMember.isHidden = true
+    //        bNumber.isHidden = true
+    //        tfName.isEnabled = false
+    //        tfLastName.isEnabled = false
+    //        tfEmail.isEnabled = false
+    //     //   tfMobile.isEnabled = false
+    //         bSave.isHidden = true
+    //    }
+    //
+    //    func doEnsbleUI() {
+    //        tfName.textColor = UIColor.black
+    //        tfLastName.textColor = UIColor.black
+    //        tfMobile.textColor = UIColor.black
+    //        tfEmail.textColor = UIColor.black
+    //
+    //        bMember.isHidden = false
+    //        bNumber.isHidden = false
+    //
+    //        tfName.isEnabled = true
+    //        tfLastName.isEnabled = true
+    //        tfEmail.isEnabled = true
+    //
+    //        bSave.isHidden = false
+    //
+    //       // tfMobile.isEnabled = true
+    //    }
     
     func doSwitchToProfile(public_mobile:String) {
-        showProgress()
+        bVC.showProgress()
         
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
         
-        let  params = ["key":apiKey(),
+        let  params = ["key":bVC.apiKey(),
                        "changePrivacy":"changePrivacy",
-                       "society_id":doGetLocalDataUser().society_id!,
-                        "public_mobile":public_mobile,
-                       "user_id":doGetLocalDataUser().user_id!,
-                       "unit_id":doGetLocalDataUser().unit_id!]
+                       "society_id":bVC.doGetLocalDataUser().society_id!,
+                       "public_mobile":public_mobile,
+                       "user_id":bVC.doGetLocalDataUser().user_id!,
+                       "unit_id":bVC.doGetLocalDataUser().unit_id!]
         
         
         
@@ -425,17 +382,17 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         requrest.requestPost(serviceName: ServiceNameConstants.aboutController, parameters: params) { (json, error) in
             
             if json != nil {
-                self.hideProgress()
+                self.bVC.hideProgress()
                 do {
                     let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
                     
                     
                     if response.status == "200" {
-                       
+                        
                         
                     }else {
                         //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: response.message)
+                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -445,9 +402,6 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
     }
     
     
-    @IBAction func onEditProfile(_ sender: Any) {
-        doEnsbleUI()
-    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
@@ -487,24 +441,24 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
             
             emergency.append(emergencyModel)
             emergencyModel = nil
-            cvNumber.reloadData()
+//            cvNumber.reloadData()
             heightCVEmergancy =  heightCVEmergancy + 50.0
-            heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
+//            heightConstrainstNumber.constant = CGFloat(heightCVEmergancy)
             
         }
         if memberModel != nil      {
             member.append(memberModel)
             memberModel = nil
-            cvMember.reloadData()
+//            cvMember.reloadData()
             heightCVFamily =  heightCVFamily + 50.0
             print("family " , member.count)
-            heightConstrainstMember.constant = CGFloat(heightCVFamily)
+//            heightConstrainstMember.constant = CGFloat(heightCVFamily)
         }
         
     }
     
     func doSubmitData() {
-        showProgress()
+        bVC.showProgress()
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
         var member_family_id = ""
         var member_name = ""
@@ -609,84 +563,81 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
             }
             
         }
-        
-        
-        
         var user_profile_pic = ""
         
         
         if ivProfile.image != nil {
-            user_profile_pic = convertImageTobase64(imageView: ivProfile)
+            user_profile_pic = bVC.convertImageTobase64(imageView: ivProfile)
         }
         
-        let fullname = tfName.text! + " " + tfLastName.text!
-        let params = ["key":apiKey(),
-                      "addUser":"update",
-                      "user_id":doGetLocalDataUser().user_id!,
-                      "society_id":doGetLocalDataUser().society_id!,
-                      "block_id":doGetLocalDataUser().block_id!,
-                      "floor_id":doGetLocalDataUser().floor_id!,
-                      "unit_id":doGetLocalDataUser().unit_id!,
-                      "user_first_name":tfName.text!,
-                      "user_last_name":tfLastName.text!,
-                      "user_full_name": fullname,
-                      "user_mobile":tfMobile.text!,
-                      "user_email":tfEmail.text!,
-                      "user_password":UserDefaults.standard.string(forKey: StringConstants.KEY_PASSWORD)!,
-                      "user_id_proof":"",
-                      "member_family_id":member_family_id,
-                      "member_name":member_name,
-                      "member_age":member_age,
-                      "member_relation":member_relation,
-                      "emergencyContact_id":emergencyContact_id,
-                      "person_name":person_name,
-                      "person_mobile":person_mobile,
-                      "relation":relation,
-                      "user_profile_pic":user_profile_pic,
-                      "owner_name":"",
-                      "owner_email":"",
-                      "owner_mobile":tfMobile.text!,
-                      "user_type":doGetLocalDataUser().user_type!]
-        
-        
-        
-        
-        print("param" , params)
-        
-        let requrest = AlamofireSingleTon.sharedInstance
-        
-        
-        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
-            
-            if json != nil {
-                self.hideProgress()
-                do {
-                    let response = try JSONDecoder().decode(ResponseRegistration.self, from:json!)
-                    
-                    
-                    if response.status == "200" {
-                        self.doDisbleUI()
-                        self.doGetProfileData()
-                        // Utils.setHomeRootLogin()
-                        
-                    }else {
-                        self.showAlertMessage(title: "Alert", msg: response.message)
-                    }
-                } catch {
-                    print("parse error")
-                }
-            }
-        }
+//        let fullname = tfName.text! + " " + tfLastName.text!
+//        let params = ["key":bVC.apiKey(),
+//                      "addUser":"update",
+//                      "user_id":bVC.doGetLocalDataUser().user_id!,
+//                      "society_id":bVC.doGetLocalDataUser().society_id!,
+//                      "block_id":bVC.doGetLocalDataUser().block_id!,
+//                      "floor_id":bVC.doGetLocalDataUser().floor_id!,
+//                      "unit_id":bVC.doGetLocalDataUser().unit_id!,
+//                      "user_first_name":tfName.text!,
+//                      "user_last_name":tfLastName.text!,
+//                      "user_full_name": fullname,
+//                      "user_mobile":tfMobile.text!,
+//                      "user_email":tfEmail.text!,
+//                      "user_password":UserDefaults.standard.string(forKey: StringConstants.KEY_PASSWORD)!,
+//                      "user_id_proof":"",
+//                      "member_family_id":member_family_id,
+//                      "member_name":member_name,
+//                      "member_age":member_age,
+//                      "member_relation":member_relation,
+//                      "emergencyContact_id":emergencyContact_id,
+//                      "person_name":person_name,
+//                      "person_mobile":person_mobile,
+//                      "relation":relation,
+//                      "user_profile_pic":user_profile_pic,
+//                      "owner_name":"",
+//                      "owner_email":"",
+//                      "owner_mobile":tfMobile.text!,
+//                      "user_type":bVC.doGetLocalDataUser().user_type!]
+//
+//
+//
+//
+//        print("param" , params)
+//
+//        let requrest = AlamofireSingleTon.sharedInstance
+//
+//
+//        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
+//
+//            if json != nil {
+//                self.bVC.hideProgress()
+//                do {
+//                    let response = try JSONDecoder().decode(ResponseRegistration.self, from:json!)
+//
+//
+//                    if response.status == "200" {
+//                        self.doDisbleUI()
+//                        self.doGetProfileData()
+//                        // Utils.setHomeRootLogin()
+//
+//                    }else {
+//                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
+//                    }
+//                } catch {
+//                    print("parse error")
+//                }
+//            }
+//        }
         
     }
-
+    
     func doGetProfileData() {
         /// showProgress()
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
-        let params = ["key":apiKey(),
+        let params = ["key":bVC.apiKey(),
                       "getProfileData":"getProfileData",
-                      "user_id":doGetLocalDataUser().user_id!,
-                      "society_id":doGetLocalDataUser().society_id!]
+                      "user_id":bVC.doGetLocalDataUser().user_id!,
+                      "society_id":bVC.doGetLocalDataUser().society_id!]
         
         
         print("param" , params)
@@ -705,11 +656,11 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
                         if let encoded = try? JSONEncoder().encode(loginResponse) {
                             UserDefaults.standard.set(encoded, forKey: StringConstants.KEY_LOGIN_DATA)
                         }
-                       // self.initUI()
+                        // self.initUI()
                         
                     }else {
                         //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: loginResponse.message)
+                        self.bVC.showAlertMessage(title: "Alert", msg: loginResponse.message)
                     }
                 } catch {
                     print("parse error")
@@ -759,97 +710,97 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         let index = seder.tag
         print("onClickDeleteMemeber" , index)
         
-        doDeletrMember(user_family_id: member[index].user_family_id, index: index)
+//        doDeletrMember(user_family_id: member[index].user_family_id, index: index)
         
     }
     
     @objc func onClickDeleteEmergancy(seder:UIButton) {
         let index = seder.tag
         print("onClickDeleteEmergancy" , index)
-        doDeletrNumber(emergencyContact_id: emergency[index].emergencyContact_id, index: index)
+//        doDeletrNumber(emergencyContact_id: emergency[index].emergencyContact_id, index: index)
     }
     
-    func doDeletrMember(user_family_id:String,index:Int) {
-         showProgress()
-        //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
-        let params = ["key":apiKey(),
-                      "deleteFamilyMember":"deleteFamilyMember",
-                      "user_family_id":user_family_id]
-        
-        
-        print("param" , params)
-        
-        let requrest = AlamofireSingleTon.sharedInstance
-        
-        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
-            self.hideProgress()
-            if json != nil {
-                // self.hideProgress()
-                do {
-                    let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
-                    
-                    
-                    if response.status == "200" {
-                        
-                        self.member.remove(at: index)
-                        self.cvMember.reloadData()
-                        self.doGetProfileData()
-                        
-                    }else {
-                        //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: response.message)
-                    }
-                } catch {
-                    print("parse error")
-                }
-            }
-        }
-    }
+//    func doDeletrMember(user_family_id:String,index:Int) {
+//        bVC.showProgress()
+//        //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
+//        let params = ["key":bVC.apiKey(),
+//                      "deleteFamilyMember":"deleteFamilyMember",
+//                      "user_family_id":user_family_id]
+//
+//
+//        print("param" , params)
+//
+//        let requrest = AlamofireSingleTon.sharedInstance
+//
+//        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
+//            self.bVC.hideProgress()
+//            if json != nil {
+//                // self.hideProgress()
+//                do {
+//                    let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
+//
+//
+//                    if response.status == "200" {
+//
+//                        self.member.remove(at: index)
+//                        self.cvMember.reloadData()
+//                        self.doGetProfileData()
+//
+//                    }else {
+//                        //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
+//                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
+//                    }
+//                } catch {
+//                    print("parse error")
+//                }
+//            }
+//        }
+//    }
     
-    func doDeletrNumber(emergencyContact_id:String,index:Int) {
-         showProgress()
-        //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
-        let params = ["key":apiKey(),
-                      "deleteEmergencyContact":"deleteEmergencyContact",
-                      "emergencyContact_id":emergencyContact_id]
-        
-        
-        print("param" , params)
-        
-        let requrest = AlamofireSingleTon.sharedInstance
-        
-        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
-            self.hideProgress()
-            if json != nil {
-                // self.hideProgress()
-                do {
-                    let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
-                    
-                    
-                    if response.status == "200" {
-                        
-                        self.emergency.remove(at: index)
-                        self.cvNumber.reloadData()
-                        self.doGetProfileData()
-                        
-                    }else {
-                        //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: response.message)
-                    }
-                } catch {
-                    print("parse error")
-                }
-            }
-        }
-    }
+//    func doDeletrNumber(emergencyContact_id:String,index:Int) {
+//        bVC.showProgress()
+//        //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
+//        let params = ["key":bVC.apiKey(),
+//                      "deleteEmergencyContact":"deleteEmergencyContact",
+//                      "emergencyContact_id":emergencyContact_id]
+//
+//
+//        print("param" , params)
+//
+//        let requrest = AlamofireSingleTon.sharedInstance
+//
+//        requrest.requestPost(serviceName: ServiceNameConstants.residentRegisterController, parameters: params) { (json, error) in
+//            self.bVC.hideProgress()
+//            if json != nil {
+//                // self.hideProgress()
+//                do {
+//                    let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
+//
+//
+//                    if response.status == "200" {
+//
+//                        self.emergency.remove(at: index)
+//                        self.cvNumber.reloadData()
+//                        self.doGetProfileData()
+//
+//                    }else {
+//                        //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
+//                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
+//                    }
+//                } catch {
+//                    print("parse error")
+//                }
+//            }
+//        }
+//    }
     
     func doCallSwichApartment(unit_status:String) {
-         showProgress()
+        bVC.showProgress()
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
-        let params = ["key":apiKey(),
+        let params = ["key":bVC.apiKey(),
                       "switchClose":"switchClose",
                       "unit_status":unit_status,
-                      "unit_id":doGetLocalDataUser().unit_id!]
+                      "unit_id":bVC.doGetLocalDataUser().unit_id!]
         
         
         print("param" , params)
@@ -857,7 +808,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         let requrest = AlamofireSingleTon.sharedInstance
         
         requrest.requestPost(serviceName: ServiceNameConstants.switchController, parameters: params) { (json, error) in
-            self.hideProgress()
+            self.bVC.hideProgress()
             if json != nil {
                 // self.hideProgress()
                 do {
@@ -870,7 +821,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
                         
                     }else {
                         //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: response.message)
+                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -880,19 +831,19 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
     }
     
     func doSwitchToOnwer() {
-        showProgress()
+        bVC.showProgress()
         
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
         
-        let  params = ["key":apiKey(),
+        let  params = ["key":bVC.apiKey(),
                        "switchUser":"switchUser",
-                       "society_id":doGetLocalDataUser().society_id!,
-                       "owner_name":doGetLocalDataUser().owner_name!,
-                       "owner_email":doGetLocalDataUser().owner_email!,
-                       "owner_mobile":doGetLocalDataUser().owner_mobile!,
+                       "society_id":bVC.doGetLocalDataUser().society_id!,
+                       "owner_name":bVC.doGetLocalDataUser().owner_name!,
+                       "owner_email":bVC.doGetLocalDataUser().owner_email!,
+                       "owner_mobile":bVC.doGetLocalDataUser().owner_mobile!,
                        "addUser":"0",
-                       "user_id":doGetLocalDataUser().user_id!,
-                       "unit_id":doGetLocalDataUser().unit_id!]
+                       "user_id":bVC.doGetLocalDataUser().user_id!,
+                       "unit_id":bVC.doGetLocalDataUser().unit_id!]
         
         
         
@@ -904,7 +855,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         requrest.requestPost(serviceName: ServiceNameConstants.switchUserController, parameters: params) { (json, error) in
             
             if json != nil {
-                self.hideProgress()
+                self.bVC.hideProgress()
                 do {
                     let response = try JSONDecoder().decode(ResponseCommonMessage.self, from:json!)
                     
@@ -915,7 +866,7 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
                         
                     }else {
                         //                        UserDefaults.standard.set("0", forKey: StringConstants.KEY_LOGIN)
-                        self.showAlertMessage(title: "Alert", msg: response.message)
+                        self.bVC.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -959,7 +910,6 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         
     }
     
-    
     func addInputAccessoryForTextFields(textFields: [UITextField], dismissable: Bool = true, previousNextable: Bool = false) {
         for (index, textField) in textFields.enumerated() {
             let toolbar: UIToolbar = UIToolbar()
@@ -997,7 +947,6 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         }
     }
     
-    
     @objc func keyboardWillBeHidden(aNotification: NSNotification) {
         
         
@@ -1006,13 +955,8 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         self.scrollView.scrollIndicatorInsets = contentInsets
     }
     
-    private func textFieldDidBeginEditing(textField: UITextField) {
-        tfName = (textField as! ACFloatingTextfield)
-    }
+   
     
-    private func textFieldDidEndEditing(textField: UITextField) {
-        tfName = nil
-    }
     @objc  func keyboardWillShow(notification: NSNotification) {
         //Need to calculate keyboard exact size due to Apple suggestions
         
@@ -1026,13 +970,13 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
         //viewHieght.constant = contentInsets.bottom
         var aRect : CGRect = self.view.frame
         aRect.size.height -= keyboardSize.height
-        if tfName != nil
-        {
-            if (!aRect.contains(tfName!.frame.origin))
-            {
-                self.scrollView.scrollRectToVisible(tfName!.frame, animated: true)
-            }
-        }
+//        if tfName != nil
+//        {
+//            if (!aRect.contains(tfName!.frame.origin))
+//            {
+//                self.scrollView.scrollRectToVisible(tfName!.frame, animated: true)
+//            }
+//        }
     }
     
     @IBAction func onClickAbout(_ sender: Any) {
@@ -1041,53 +985,53 @@ class ProfileVC: BaseVC ,UIImagePickerControllerDelegate,UINavigationControllerD
     }
 }
 
-extension ProfileVC : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == cvNumber {
-            return emergency.count
-        }
-        
-        return member.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        
-        if collectionView == cvNumber {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item, for: indexPath) as! InfoFamalyMemberCell
-            cell.lbName.text = self.emergency[indexPath.row].person_name
-            cell.lbMobile.text = emergency[indexPath.row].person_mobile
-            cell.lbReletion.text = emergency[indexPath.row].relation
-            cell.bDelete.isHidden = false
-            cell.bDelete.tag = indexPath.row
-            cell.bDelete.addTarget(self, action: #selector(onClickDeleteEmergancy(seder:)), for: .touchUpInside)
-            return cell
-        }
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item, for: indexPath) as!InfoFamalyMemberCell
-        cell.lbName.text = member[indexPath.row].member_name
-        cell.lbMobile.text = member[indexPath.row].member_age
-        cell.lbReletion.text = member[indexPath.row].member_relation_name
-        cell.bDelete.isHidden = false
-        cell.bDelete.tag = indexPath.row
-        cell.bDelete.addTarget(self, action: #selector(onClickDeleteMemeber(seder:)), for: .touchUpInside)
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let yourWidth = collectionView.bounds.width
-        return CGSize(width: yourWidth-4, height: 50)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
-    }
-    
-}
+//extension ProfileVC {
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        if collectionView == cvNumber {
+//            return emergency.count
+//        }
+//
+//        return member.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//
+//
+//        if collectionView == cvNumber {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item, for: indexPath) as! InfoFamalyMemberCell
+//            cell.lbName.text = self.emergency[indexPath.row].person_name
+//            cell.lbMobile.text = emergency[indexPath.row].person_mobile
+//            cell.lbReletion.text = emergency[indexPath.row].relation
+//            cell.bDelete.isHidden = false
+//            cell.bDelete.tag = indexPath.row
+//            cell.bDelete.addTarget(self, action: #selector(onClickDeleteEmergancy(seder:)), for: .touchUpInside)
+//            return cell
+//        }
+//
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item, for: indexPath) as!InfoFamalyMemberCell
+//        cell.lbName.text = member[indexPath.row].member_name
+//        cell.lbMobile.text = member[indexPath.row].member_age
+//        cell.lbReletion.text = member[indexPath.row].member_relation_name
+//        cell.bDelete.isHidden = false
+//        cell.bDelete.tag = indexPath.row
+//        cell.bDelete.addTarget(self, action: #selector(onClickDeleteMemeber(seder:)), for: .touchUpInside)
+//
+//        return cell
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+//        let yourWidth = collectionView.bounds.width
+//        return CGSize(width: yourWidth-4, height: 50)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 5
+//    }
+//
+//}

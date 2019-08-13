@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CenteredCollectionView
 
 struct BlockResponse : Codable{
     let message:String!// "message" : "Get Block success.",
@@ -16,10 +16,10 @@ struct BlockResponse : Codable{
 }
 
 struct BlockModel : Codable{
-   let block_name:String! //"block_name" : "A",
-   let block_id:String! //"block_id" : "65",
-   let society_id:String!// "society_id" : "17",
-   let block_status:String!// "block_status" : "0"
+    let block_name:String! //"block_name" : "A",
+    let block_id:String! //"block_id" : "65",
+    let society_id:String!// "society_id" : "17",
+    let block_status:String!// "block_status" : "0"
 }
 
 
@@ -31,19 +31,19 @@ struct FloorResponse : Codable{
 
 struct FloorModel:Codable {
     let floor_name:String! //"floor_name" : "1 Floor",
-   let floor_status:String! // "floor_status" : "0",
+    let floor_status:String! // "floor_status" : "0",
     let floor_id:String! //"floor_id" : "284",
     let block_id:String! //"block_id" : "65",
     let society_id:String! //"society_id" : "17"
     let units:[UnitModel]!
 }
 struct UnitModel : Codable {
-   let unit_type:String! //"unit_type" : null,
-   let society_id:String! //"/society_id" : "17",
-   let floor_id:String!// "floor_id" : "284",
-   let unit_status:String! //"unit_status" : "1",
-  let unit_name:String!  //"unit_name" : "101",
-   let unit_id:String! //"unit_id" : "1266"
+    let unit_type:String! //"unit_type" : null,
+    let society_id:String! //"/society_id" : "17",
+    let floor_id:String!// "floor_id" : "284",
+    let unit_status:String! //"unit_status" : "1",
+    let unit_name:String!  //"unit_name" : "101",
+    let unit_id:String! //"unit_id" : "1266"
 }
 
 class SelectBlockAndRoomVC: BaseVC {
@@ -65,7 +65,7 @@ class SelectBlockAndRoomVC: BaseVC {
     var ownedDataSelectVC:OwnedDataSelectVC!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+       
         // Do any additional setup after loading the view.
         cvBlock.delegate = self
         cvBlock.dataSource = self
@@ -86,7 +86,7 @@ class SelectBlockAndRoomVC: BaseVC {
     }
     
     @objc func clickFloor(_ notification: NSNotification) {
-      
+        
         let data =  notification.userInfo?["data"] as? UnitModel
         
         if data?.unit_status == "0" {
@@ -158,7 +158,7 @@ class SelectBlockAndRoomVC: BaseVC {
                     
                     
                     if response.status == "200" {
-                       // lbTitle.text = "Select Unit"
+                        // lbTitle.text = "Select Unit"
                         self.viewFloors.isHidden = false
                         self.cvBlock.isHidden = true
                         self.floors.append(contentsOf: response.floors)
@@ -178,9 +178,9 @@ class SelectBlockAndRoomVC: BaseVC {
     
     
     @IBAction func onClickBack(_ sender: Any) {
-       // doGetBlock()
-      //  dismiss(animated: true, completion: nil)
-    doPopBAck()
+        // doGetBlock()
+        //  dismiss(animated: true, completion: nil)
+        doPopBAck()
     }
     
 }
@@ -200,7 +200,7 @@ extension SelectBlockAndRoomVC : UICollectionViewDelegate , UICollectionViewData
             
             cell.lbTitle.text = floors[indexPath.row].floor_name
             cell.doSetData(units: floors[indexPath.row].units, isMember: false)
-            
+            cell.layer.cornerRadius = cell.bounds.height/2
             return cell
         }
         
@@ -208,7 +208,8 @@ extension SelectBlockAndRoomVC : UICollectionViewDelegate , UICollectionViewData
         
         cell.lbTitle.text = blocks[indexPath.row].block_name
         cell.lbTitle.textColor = UIColor.black
-        
+        cell.layer.cornerRadius = cell.bounds.height/2
+        cell.layer.masksToBounds = true
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -219,7 +220,7 @@ extension SelectBlockAndRoomVC : UICollectionViewDelegate , UICollectionViewData
         let yourWidth = collectionView.bounds.width  / 2
         return CGSize(width: yourWidth-4, height: 100)
     }
-  
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -230,10 +231,10 @@ extension SelectBlockAndRoomVC : UICollectionViewDelegate , UICollectionViewData
         
         if collectionView == cvBlock {
             doGetFlorUnit(block_id: blocks[indexPath.row].block_id,bloack_name: blocks[indexPath.row].block_name)
-       
+            
             blockModel = blocks[indexPath.row]
         }
-      
+        
         
         
         

@@ -6,6 +6,7 @@
 //  Copyright © 2019 anjali. All rights reserved.
 //
 import UIKit
+import CenteredCollectionView
 struct ResponseMember : Codable {
     
     var population:Int! // "population" : 1,
@@ -19,7 +20,6 @@ struct BlockModelMember : Codable {
     var block_id:String! //"block_id" : "126",
     var society_id:String!  //"society_id" : "48"
     var isSelect:Bool!  //"society_id" : "48"
-    
     var  floors : [FloorModelMember]!
     
 }
@@ -73,6 +73,7 @@ struct MyParkingModelMember : Codable {
     
 }
 class MemberVC: BaseVC {
+    @IBOutlet weak var viewSelectorSlot: UIView!
     @IBOutlet weak var cvBlock: UICollectionView!
     @IBOutlet weak var cvUnits: UICollectionView!
     @IBOutlet weak var lbBlock: UILabel!
@@ -90,11 +91,25 @@ class MemberVC: BaseVC {
     @IBOutlet weak var lbChatCount: UILabel!
     @IBOutlet weak var viewNotiCount: UIView!
     @IBOutlet weak var lbNotiCount: UILabel!
-    
+    var centeredCollectionViewFlowLayout: CenteredCollectionViewFlowLayout!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewSelectorSlot.layer.borderColor = #colorLiteral(red: 0.3960784314, green: 0.2235294118, blue: 0.4549019608, alpha: 1)
+        viewSelectorSlot.layer.borderWidth = 2
+        centeredCollectionViewFlowLayout = cvBlock.collectionViewLayout as! CenteredCollectionViewFlowLayout
+        let yourWidth = cvBlock.bounds.width  / 2
+        //        return CGSize(width: yourWidth-4, height: 100)
+        centeredCollectionViewFlowLayout.itemSize = CGSize(
+            width: 60,
+            height: 60
+        )
+        cvBlock.showsVerticalScrollIndicator = false
+        cvBlock.showsHorizontalScrollIndicator = false
+        // Modify the collectionView's decelerationRate (REQUIRED STEP)
+        cvBlock.decelerationRate = UIScrollView.DecelerationRate.fast
         // Do any additional setup after loading the view.
         cvBlock.delegate = self
         cvBlock.dataSource = self
@@ -120,7 +135,7 @@ class MemberVC: BaseVC {
         loadNoti()
     }
     func loadNoti() {
-       
+        
         if getChatCount() !=  "0" {
             self.viewChatCount.isHidden =  false
             self.lbChatCount.text = getChatCount()
@@ -158,8 +173,8 @@ class MemberVC: BaseVC {
                 self.navigationController?.pushViewController(vc, animated: true)
                 
                 //  revealViewController().pushFrontViewController(vc, animated: true)
-           
-              }
+                
+            }
             
         }
         
@@ -169,16 +184,15 @@ class MemberVC: BaseVC {
     func selectItem(index:Int) {
         
         //blocks
-        
+        print(index)
         for i in (0..<blocks.count) {
+            
             if i == index {
                 blocks[i].isSelect = true
             } else {
                 blocks[i].isSelect = false
             }
-            
         }
-        
         cvBlock.reloadData()
         
     }
@@ -242,7 +256,7 @@ class MemberVC: BaseVC {
         
     }
     
-   
+    
     
 }
 extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -261,7 +275,7 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
             
             cell.lbTitle.text = floors[indexPath.row].floor_name
             cell.doSetDataMember(units: floors[indexPath.row].units, isMember: true)
-            
+//            cell.viewMain.addDashedBorder()
             return cell
         }
         
@@ -269,7 +283,7 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
         
         cell.lbTitle.text = blocks[indexPath.row].block_name
         
-       // cell.lbTitle.textColor = UIColor.white
+        // cell.lbTitle.textColor = UIColor.white
         
         if blocks[indexPath.row].isSelect {
             // cell.viewTest.backgroundColor = ColorConstant.primaryColor
@@ -282,6 +296,8 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
         }
         
         
+        cell.layer.cornerRadius = cell.bounds.height/2
+//        cell.viewMain.addDashedBorder()
         return cell
         
         
@@ -290,39 +306,56 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == cvUnits {
             let yourWidth = collectionView.bounds.width
-            return CGSize(width: yourWidth-4, height: 80)
+            return CGSize(width: yourWidth-4, height: 100)
         }
         
-        return CGSize(width: 80, height: 60)
+        return CGSize(width: 60, height: 60)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == cvBlock {
-           /* let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
+            /* let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
+             
+             selectedCell.viewTest.backgroundColor = ColorConstant.primaryColor
+             selectedCell.lbTitle.textColor = UIColor.white
+             
+             isFirstTimeload = false*/
             
-            selectedCell.viewTest.backgroundColor = ColorConstant.primaryColor
-            selectedCell.lbTitle.textColor = UIColor.white
-           
-            isFirstTimeload = false*/
-             self.setDataUtnit(floors: blocks[indexPath.row].floors)
+            let currentCenteredPage = centeredCollectionViewFlowLayout.currentCenteredPage
+            if currentCenteredPage != indexPath.row {
+                // trigger a scrollToPage(index: animated:)
+                centeredCollectionViewFlowLayout.scrollToPage(index: indexPath.row, animated: true)
+            }
+            self.setDataUtnit(floors: blocks[indexPath.row].floors)
             selectItem(index: indexPath.row)
         }
         
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
+        print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+        self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
         
-        
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
+        print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+        self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
         
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-       /* if collectionView == cvBlock {
-            let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
-            selectedCell.viewTest.backgroundColor = ColorConstant.colorGray10
-            selectedCell.lbTitle.textColor = ColorConstant.colorGray90
-            isFirstTimeload = false
-        }*/
+        /* if collectionView == cvBlock {
+         let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
+         selectedCell.viewTest.backgroundColor = ColorConstant.colorGray10
+         selectedCell.lbTitle.textColor = ColorConstant.colorGray90
+         isFirstTimeload = false
+         }*/
         
     }
     

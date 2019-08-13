@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.8.2)
+  - CenteredCollectionView (2.2.1)
   - Cosmos (18.0.1)
   - DropDown (2.3.13)
   - EzPopup (1.1)
@@ -80,6 +81,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
+  - CenteredCollectionView
   - Cosmos (~> 18.0)
   - DropDown
   - EzPopup
@@ -97,6 +99,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - CenteredCollectionView
     - Cosmos
     - DropDown
     - EzPopup
@@ -121,6 +124,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  CenteredCollectionView: ba6e45fb7774627890621d73c8dd7dbd33391da9
   Cosmos: 7dfaa3f52584ca5f94ab74b5c2e264019cc9f7f5
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   EzPopup: b959cfb0d70d782a28e770a96c454df0401467c7
@@ -143,6 +147,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 36f4720243c8582c2be243a60a51e193c761f541
   XLPagerTabStrip: 61c57fd61f611ee5f01ff1495ad6fbee8bf496c5
 
-PODFILE CHECKSUM: c9cb21b5fb6947d32d1fdb7c8eb69103d21444ef
+PODFILE CHECKSUM: 9b896f98790e1ee13f856151e424d612e2d4a394
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.7.0
