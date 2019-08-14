@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25001E892303D6600059FA9D /* DashedBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25001E882303D6600059FA9D /* DashedBorderView.swift */; };
 		2502414222F0203D00A24026 /* DailogFacilityBookVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502414122F0203D00A24026 /* DailogFacilityBookVC.swift */; };
 		2502414422F159D500A24026 /* InvoiceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502414322F159D500A24026 /* InvoiceVC.swift */; };
 		250BE7EE22F31BB800C8882C /* AboutSelfVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250BE7ED22F31BB800C8882C /* AboutSelfVC.swift */; };
 		2518674C22CF0A7C0076D056 /* AttendEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2518674B22CF0A7C0076D056 /* AttendEventVC.swift */; };
 		2520F5B3229F8F620023F90A /* Extentios.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2520F5B2229F8F620023F90A /* Extentios.swift */; };
 		2520F5B5229FB3EC0023F90A /* OTPVerificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2520F5B4229FB3EC0023F90A /* OTPVerificationVC.swift */; };
+		254F792B23042C450042D445 /* RadialGradientSqureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254F792A23042C450042D445 /* RadialGradientSqureView.swift */; };
 		2559F19122A23A01006181A8 /* SelectUserTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2559F19022A23A01006181A8 /* SelectUserTypeVC.swift */; };
 		2559F19322A2423C006181A8 /* OwnedDataSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2559F19222A2423C006181A8 /* OwnedDataSelectVC.swift */; };
 		2559F19522A248CE006181A8 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2559F19422A248CE006181A8 /* Utils.swift */; };
@@ -41,6 +43,7 @@
 		258CD0382297E9DE00AAB8E6 /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 258CD0372297E9DE00AAB8E6 /* Color.xcassets */; };
 		258CD03A2297EBCA00AAB8E6 /* ColorConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258CD0392297EBCA00AAB8E6 /* ColorConstant.swift */; };
 		258CD03C2297F62A00AAB8E6 /* ButtonWithShadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258CD03B2297F62A00AAB8E6 /* ButtonWithShadow.swift */; };
+		259E6F4F2302BE1F00A4C40B /* RadialGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259E6F4E2302BE1F00A4C40B /* RadialGradientView.swift */; };
 		259FC88622CC6FF100A72204 /* SelectLocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259FC88522CC6FF100A72204 /* SelectLocationVC.swift */; };
 		25AF673922BB623300637C1C /* NoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF673822BB623300637C1C /* NoticeVC.swift */; };
 		25AF673C22BB883B00637C1C /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF673B22BB883B00637C1C /* ProfileVC.swift */; };
@@ -213,6 +216,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		25001E882303D6600059FA9D /* DashedBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedBorderView.swift; sourceTree = "<group>"; };
 		2502414122F0203D00A24026 /* DailogFacilityBookVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailogFacilityBookVC.swift; sourceTree = "<group>"; };
 		2502414322F159D500A24026 /* InvoiceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceVC.swift; sourceTree = "<group>"; };
 		2506D75922A52C96008F956E /* DailogFamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailogFamilyMember.swift; sourceTree = "<group>"; };
@@ -220,6 +224,7 @@
 		2518674B22CF0A7C0076D056 /* AttendEventVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendEventVC.swift; sourceTree = "<group>"; };
 		2520F5B2229F8F620023F90A /* Extentios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extentios.swift; sourceTree = "<group>"; };
 		2520F5B4229FB3EC0023F90A /* OTPVerificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPVerificationVC.swift; sourceTree = "<group>"; };
+		254F792A23042C450042D445 /* RadialGradientSqureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradientSqureView.swift; sourceTree = "<group>"; };
 		2559F19022A23A01006181A8 /* SelectUserTypeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectUserTypeVC.swift; sourceTree = "<group>"; };
 		2559F19222A2423C006181A8 /* OwnedDataSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedDataSelectVC.swift; sourceTree = "<group>"; };
 		2559F19422A248CE006181A8 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -250,6 +255,7 @@
 		258CD0372297E9DE00AAB8E6 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		258CD0392297EBCA00AAB8E6 /* ColorConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstant.swift; sourceTree = "<group>"; };
 		258CD03B2297F62A00AAB8E6 /* ButtonWithShadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithShadow.swift; sourceTree = "<group>"; };
+		259E6F4E2302BE1F00A4C40B /* RadialGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradientView.swift; sourceTree = "<group>"; };
 		259FC88522CC6FF100A72204 /* SelectLocationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLocationVC.swift; sourceTree = "<group>"; };
 		25AF673822BB623300637C1C /* NoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeVC.swift; sourceTree = "<group>"; };
 		25AF673B22BB883B00637C1C /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
@@ -571,6 +577,9 @@
 				2559F19422A248CE006181A8 /* Utils.swift */,
 				2BFC8FD622B0C35C00115AD8 /* ServiceNameConstants.swift */,
 				2BFC8FD822B0DCD200115AD8 /* ResponseStructs.swift */,
+				259E6F4E2302BE1F00A4C40B /* RadialGradientView.swift */,
+				25001E882303D6600059FA9D /* DashedBorderView.swift */,
+				254F792A23042C450042D445 /* RadialGradientSqureView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1551,6 +1560,7 @@
 				2B476A0C22FD48ED007E033F /* ProfilePersonalDetailVC.swift in Sources */,
 				2B284D0422B9FAF800CF1AE0 /* ResourceCell.swift in Sources */,
 				2BFC8FD922B0DCD200115AD8 /* ResponseStructs.swift in Sources */,
+				254F792B23042C450042D445 /* RadialGradientSqureView.swift in Sources */,
 				25C9839222980CE600F2DF3A /* NVActivityIndicatorAnimationBallRotate.swift in Sources */,
 				2520F5B5229FB3EC0023F90A /* OTPVerificationVC.swift in Sources */,
 				2560193222EB23D500510225 /* Reachability.swift in Sources */,
@@ -1564,6 +1574,7 @@
 				2559F19C22A28AA4006181A8 /* SelectBlockAndRoomVC.swift in Sources */,
 				25C983A622980CE600F2DF3A /* NVActivityIndicatorAnimationTriangleSkewSpin.swift in Sources */,
 				2B9B0E70229EA07200734FCA /* HomeNavigationMenuController.swift in Sources */,
+				25001E892303D6600059FA9D /* DashedBorderView.swift in Sources */,
 				2B5D67F022C63C4E00CBC4BB /* VotingCell.swift in Sources */,
 				2BEBDF4122D44FEF006AE21F /* BalanceSheetVc.swift in Sources */,
 				2B284CCA22B9EA1200CF1AE0 /* SplashVC.swift in Sources */,
@@ -1585,6 +1596,7 @@
 				25C9838F22980CE600F2DF3A /* NVActivityIndicatorShape.swift in Sources */,
 				2559F19322A2423C006181A8 /* OwnedDataSelectVC.swift in Sources */,
 				25C983B222980CE600F2DF3A /* NVActivityIndicatorAnimationOrbit.swift in Sources */,
+				259E6F4F2302BE1F00A4C40B /* RadialGradientView.swift in Sources */,
 				25AF673C22BB883B00637C1C /* ProfileVC.swift in Sources */,
 				2B4B0455229F919B0031B293 /* NavigationMenuCell.swift in Sources */,
 				25C983B422980DFD00F2DF3A /* NetworkAPI.swift in Sources */,

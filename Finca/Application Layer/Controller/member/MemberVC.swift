@@ -79,7 +79,8 @@ class MemberVC: BaseVC {
     @IBOutlet weak var lbBlock: UILabel!
     @IBOutlet weak var lbPopulation: UILabel!
     @IBOutlet weak var bMenu: UIButton!
-    
+    @IBOutlet weak var viewEmpty: UIView!
+   
     let itemCell = "BlockMemberCell"
     let itemCellFloor = "FloorSelectionCell"
     
@@ -101,6 +102,7 @@ class MemberVC: BaseVC {
         viewSelectorSlot.layer.borderWidth = 2
         centeredCollectionViewFlowLayout = cvBlock.collectionViewLayout as! CenteredCollectionViewFlowLayout
         let yourWidth = cvBlock.bounds.width  / 2
+        
         //        return CGSize(width: yourWidth-4, height: 100)
         centeredCollectionViewFlowLayout.itemSize = CGSize(
             width: 60,
@@ -129,6 +131,18 @@ class MemberVC: BaseVC {
         doGetSocietes()
         
         doInintialRevelController(bMenu: bMenu)
+ 
+        addRefreshControlTo(collectionView: cvUnits)
+     }
+    
+    override func pullToRefreshData(_ sender: Any) {
+        self.blocks.removeAll()
+        self.floors.removeAll()
+        cvUnits.reloadData()
+        cvBlock.reloadData()
+        hidePull()
+        
+        doGetSocietes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -182,6 +196,9 @@ class MemberVC: BaseVC {
     }
     
     func selectItem(index:Int) {
+    
+        
+    print("selectItem", index)
         
         //blocks
         print(index)
@@ -257,6 +274,15 @@ class MemberVC: BaseVC {
     }
     
     
+    func setGradintColor(viewGradint:UIView,color:[CGColor]) {
+      //  let context = UIGraphicsGetCurrentContext()
+        let colors = color as CFArray
+        let endRadius = min(viewGradint.frame.width, viewGradint.frame.height) / 2
+        let center = CGPoint(x: viewGradint.bounds.size.width / 2, y: viewGradint.bounds.size.height / 2)
+        let gradient = CGGradient(colorsSpace: nil, colors: colors, locations: nil)
+        UIGraphicsGetCurrentContext()!.drawRadialGradient(gradient!, startCenter: center, startRadius: 0.0, endCenter: center, endRadius: endRadius, options: CGGradientDrawingOptions.drawsBeforeStartLocation)
+      }
+    
     
 }
 extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -276,8 +302,18 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
             cell.lbTitle.text = floors[indexPath.row].floor_name
             cell.doSetDataMember(units: floors[indexPath.row].units, isMember: true)
 //            cell.viewMain.addDashedBorder()
+            
+           /* cell.viewTest.addDashedLineView(frame: CGRect(x: 0, y: 0, width: Int(cell.viewTest.frame.width), height: Int(cell.viewTest.frame.height)))
+            cell.contentView.setNeedsLayout()
+            cell.contentView.layoutIfNeeded()
+            cell.layoutIfNeeded()*/
+          /*  DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // Your code with delay
+                cell.viewMain.addDashedLineBorder()
+            }*/
             return cell
         }
+
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCell, for: indexPath) as! BlockMemberCell
         
@@ -287,12 +323,20 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
         
         if blocks[indexPath.row].isSelect {
             // cell.viewTest.backgroundColor = ColorConstant.primaryColor
-            cell.viewTest.backgroundColor = UIColor(named: "ColorPrimary")
-            cell.lbTitle.textColor = UIColor.white
-        } else {
+            //cell.viewTest.backgroundColor = UIColor(named: "ColorPrimary")
             
-            cell.viewTest.backgroundColor = UIColor(named: "gray_20")
-            cell.lbTitle.textColor = ColorConstant.colorGray90
+          //  setGradintColor(viewGradint: cell.viewTest , color: [ColorConstant.startEmpty.cgColor,ColorConstant.endEmpty.cgColor])
+            cell.viewTest.isHidden = false
+            cell.viewUnselect.isHidden = true
+            
+           // cell.lbTitle.textColor = UIColor.white
+        } else {
+          //  setGradintColor(viewGradint: cell.viewTest , color: [ColorConstant.startBlockUnselect.cgColor,ColorConstant.endBlockUnselect.cgColor])
+            cell.viewTest.isHidden = true
+            cell.viewUnselect.isHidden = false
+            
+          //  cell.viewTest.backgroundColor = UIColor(named: "gray_20")
+            //cell.lbTitle.textColor = ColorConstant.colorGray90
         }
         
         
@@ -305,8 +349,23 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == cvUnits {
+            var height = 0
+            
+            if floors.count > 0 {
+                 let count = floors[indexPath.row].units.count
+                
+                if   count % 2 == 0 {
+                    let subcount = count / 4
+                    print("sub",subcount)
+                    height = height +   (130 * subcount)
+                } else {
+                    let subcount = count / 4
+                    
+                    height =  (130 * subcount)  + height
+                }
+            }
             let yourWidth = collectionView.bounds.width
-            return CGSize(width: yourWidth-4, height: 100)
+            return CGSize(width: yourWidth-4, height: CGFloat(height))
         }
         
         return CGSize(width: 60, height: 60)
@@ -316,12 +375,7 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == cvBlock {
-            /* let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
-             
-             selectedCell.viewTest.backgroundColor = ColorConstant.primaryColor
-             selectedCell.lbTitle.textColor = UIColor.white
-             
-             isFirstTimeload = false*/
+           
             
             let currentCenteredPage = centeredCollectionViewFlowLayout.currentCenteredPage
             if currentCenteredPage != indexPath.row {
@@ -334,29 +388,43 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
         
     }
     
+    
+ 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
-        print(centeredCollectionViewFlowLayout.currentCenteredPage!)
-        self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
+ ///       print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
+//        print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+        
+        if blocks.count > 0 {
+            self.setDataUtnit(floors: blocks[centeredCollectionViewFlowLayout.currentCenteredPage!].floors)
+            
+            self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
+        }
+     
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+      
+        print("tetset " , indexPath.row)
+        /*if collectionView == cvUnits {
+            let currentCell = collectionView.cellForItem(at: indexPath) as! FloorSelectionCell
+            
+            currentCell.viewMain.addDashedLineBorder()
+        }*/
+       
         
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
-        print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+       // print(centeredCollectionViewFlowLayout.currentCenteredPage!)
         self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
         
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        /* if collectionView == cvBlock {
-         let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
-         selectedCell.viewTest.backgroundColor = ColorConstant.colorGray10
-         selectedCell.lbTitle.textColor = ColorConstant.colorGray90
-         isFirstTimeload = false
-         }*/
         
     }
+    
     
 }

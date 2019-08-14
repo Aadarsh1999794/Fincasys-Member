@@ -23,9 +23,29 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qF4-Y5-ldk">
                         <rect key="frame" x="0.0" y="0.0" width="93" height="67"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GGe-eu-7Io">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GGe-eu-7Io" customClass="RadialGradientView" customModule="Finca" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="93" height="67"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="OutsideColor">
+                                        <color key="value" red="0.396078431372549" green="0.22352941176470587" blue="0.45490196078431372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="InsideColor">
+                                        <color key="value" red="0.67843137254901964" green="0.49019607843137253" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RMv-xT-3A9" customClass="RadialGradientView" customModule="Finca" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="93" height="67"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="OutsideColor">
+                                        <color key="value" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="InsideColor">
+                                        <color key="value" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modi" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jz7-BX-xQ1">
                                 <rect key="frame" x="0.0" y="15" width="93" height="37"/>
@@ -37,12 +57,16 @@
                         <color key="backgroundColor" name="gray10"/>
                         <constraints>
                             <constraint firstItem="Jz7-BX-xQ1" firstAttribute="leading" secondItem="qF4-Y5-ldk" secondAttribute="leading" id="31c-gr-eQJ"/>
+                            <constraint firstItem="RMv-xT-3A9" firstAttribute="top" secondItem="qF4-Y5-ldk" secondAttribute="top" id="Fro-y4-kqS"/>
                             <constraint firstAttribute="trailing" secondItem="Jz7-BX-xQ1" secondAttribute="trailing" id="Kkv-fH-EAc"/>
                             <constraint firstItem="Jz7-BX-xQ1" firstAttribute="centerY" secondItem="qF4-Y5-ldk" secondAttribute="centerY" id="UXT-vj-LsR"/>
                             <constraint firstAttribute="bottom" secondItem="GGe-eu-7Io" secondAttribute="bottom" id="bmT-mi-ImU"/>
                             <constraint firstItem="GGe-eu-7Io" firstAttribute="leading" secondItem="qF4-Y5-ldk" secondAttribute="leading" id="c09-jf-FPS"/>
+                            <constraint firstAttribute="bottom" secondItem="RMv-xT-3A9" secondAttribute="bottom" id="ei9-9a-0NG"/>
                             <constraint firstAttribute="trailing" secondItem="GGe-eu-7Io" secondAttribute="trailing" id="iUF-ox-eNz"/>
                             <constraint firstItem="GGe-eu-7Io" firstAttribute="top" secondItem="qF4-Y5-ldk" secondAttribute="top" id="itU-Ku-bcj"/>
+                            <constraint firstAttribute="trailing" secondItem="RMv-xT-3A9" secondAttribute="trailing" id="k89-wE-cgV"/>
+                            <constraint firstItem="RMv-xT-3A9" firstAttribute="leading" secondItem="qF4-Y5-ldk" secondAttribute="leading" id="vXz-sd-2AC"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -59,6 +83,7 @@
                 <outlet property="lbTitle" destination="Jz7-BX-xQ1" id="b6U-Nj-yl5"/>
                 <outlet property="viewMain" destination="qF4-Y5-ldk" id="ZrA-BA-dDS"/>
                 <outlet property="viewTest" destination="GGe-eu-7Io" id="ORY-o1-K3G"/>
+                <outlet property="viewUnselect" destination="RMv-xT-3A9" id="AUB-xo-wpw"/>
             </connections>
             <point key="canvasLocation" x="160.1449275362319" y="149.66517857142856"/>
         </collectionViewCell>

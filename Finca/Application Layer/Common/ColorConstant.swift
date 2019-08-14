@@ -45,4 +45,33 @@ struct ColorConstant {
      static let rejected =  #colorLiteral(red: 0.9568627451, green: 0.262745098, blue: 0.2117647059, alpha: 1)
     static let delete =  #colorLiteral(red: 0.9568627451, green: 0.262745098, blue: 0.2117647059, alpha: 1)
      static let Hold =  #colorLiteral(red: 0.5843137255, green: 0.4588235294, blue: 0.8039215686, alpha: 1)
+    
+    static let startEmpty =  #colorLiteral(red: 0.6784313725, green: 0.4901960784, blue: 0.7450980392, alpha: 1)
+    static let endEmpty =  #colorLiteral(red: 0.3960784314, green: 0.2235294118, blue: 0.4549019608, alpha: 1)
+    
+    static let startBlockUnselect =  #colorLiteral(red: 0.8, green: 0.8, blue: 0.8, alpha: 1)
+    static let endBlockUnselect =  #colorLiteral(red: 0.6, green: 0.6, blue: 0.6, alpha: 1)
+   
+    
+    
+    static let startEmptyMember =  #colorLiteral(red: 0.6784313725, green: 0.6784313725, blue: 0.6784313725, alpha: 1)
+    static let endEmptyMember = #colorLiteral(red: 0.4862745098, green: 0.4862745098, blue: 0.4862745098, alpha: 1)
+
+    
+    static let startAvilable =  #colorLiteral(red: 0.1411764706, green: 0.8156862745, blue: 0.9411764706, alpha: 1)
+    static let endAvilable =  #colorLiteral(red: 0.2, green: 0.6823529412, blue: 0.7725490196, alpha: 1)
+    
+    static let startDefulter =  #colorLiteral(red: 0.2862745098, green: 0.2862745098, blue: 0.2862745098, alpha: 1)
+    static let endDefulter =  #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    
+    static let startClose =  #colorLiteral(red: 0.8666666667, green: 0.6196078431, blue: 0.3843137255, alpha: 1)
+    static let endClose =  #colorLiteral(red: 0.7725490196, green: 0.5019607843, blue: 0.2431372549, alpha: 1)
+ 
+    
+    static let startRent =  #colorLiteral(red: 0.9215686275, green: 0.3882352941, blue: 0.262745098, alpha: 1)
+    static let endRent =  #colorLiteral(red: 0.9725490196, green: 0.2862745098, blue: 0.1254901961, alpha: 1)
+
+    static let startPending =  #colorLiteral(red: 0.9215686275, green: 0.3882352941, blue: 0.262745098, alpha: 1)
+    static let endPending =  #colorLiteral(red: 0.9725490196, green: 0.2862745098, blue: 0.1254901961, alpha: 1)
+
 }

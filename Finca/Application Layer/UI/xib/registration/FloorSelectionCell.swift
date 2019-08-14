@@ -18,6 +18,7 @@ class FloorSelectionCell: UICollectionViewCell {
     var unitsMember = [UnitModelMember]()
     var isMember:Bool!
     
+    @IBOutlet weak var viewTest: UIView!
     var isConversoin = false
     
     @IBOutlet weak var viewMain: UIView!
@@ -35,22 +36,35 @@ class FloorSelectionCell: UICollectionViewCell {
         let inb2 = UINib(nibName: itemCell2, bundle: nil)
         cvData.register(inb2, forCellWithReuseIdentifier: itemCell2)
         
-        let yourViewBorder = CAShapeLayer()
+       /* let yourViewBorder = CAShapeLayer()
         yourViewBorder.strokeColor = ColorConstant.primaryColor.cgColor
         yourViewBorder.lineWidth = 2
         yourViewBorder.lineDashPattern = [7, 3]
-        yourViewBorder.frame = viewMain.bounds
+       // yourViewBorder.frame = viewTest.frame
         yourViewBorder.fillColor = nil
-        yourViewBorder.path = UIBezierPath(rect: viewMain.bounds).cgPath
+        yourViewBorder.path = UIBezierPath(rect: viewTest.frame).cgPath
 //        viewMain.layer.masksToBounds = true
-        viewMain.layer.addSublayer(yourViewBorder)
+        
+        
+        viewTest.layer.addSublayer(yourViewBorder)*/
        
+      //  viewMain.addDashedLineView(frame: CGRect())
+       
+        // viewMain.addDashedLineView(frame: CGRect(x: 0, y: 0, width: Int(viewMain.frame.width), height: Int(viewMain.frame.height)))
+        
+        
+       
+        cvData.isScrollEnabled = false
+        
+        
         
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
+    
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//    }
     
     func doSetData(units:[UnitModel],isMember:Bool) {
         
@@ -71,6 +85,10 @@ class FloorSelectionCell: UICollectionViewCell {
         
         self.unitsMember.append(contentsOf: units)
         self.isMember = isMember
+     
+        if let layout = cvData.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .vertical
+        }
         cvData.reloadData()
     }
     
@@ -80,28 +98,10 @@ class FloorSelectionCell: UICollectionViewCell {
     }
     
     
+    
 
 }
-extension UIView {
-    func addDashedBorder() {
-        let color = ColorConstant.primaryColor.cgColor
-        
-        let shapeLayer:CAShapeLayer = CAShapeLayer()
-        let frameSize = self.bounds.size
-        let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
-        
-        shapeLayer.bounds = shapeRect
-        shapeLayer.position = CGPoint(x: frameSize.width/2, y: frameSize.height/2)
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = color
-        shapeLayer.lineWidth = 2
-        shapeLayer.lineJoin = CAShapeLayerLineJoin.round
-        shapeLayer.lineDashPattern = [6,3]
-        shapeLayer.path = UIBezierPath(roundedRect: shapeRect, cornerRadius: 5).cgPath
-        
-        self.layer.addSublayer(shapeLayer)
-    }
-}
+
 
 extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -120,30 +120,54 @@ extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSo
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCell2, for: indexPath) as! FloorMemberCell
             
             
-            cell.viewMain.layer.cornerRadius = 0.0
+           /// cell.viewMain.layer.cornerRadius = 0.0
             
-            if unitsMember[indexPath.row].unit_status == "0" {
+        /*   if unitsMember[indexPath.row].unit_status == "0" {
+            
+            print("avilabe" , indexPath.row)
                 //avilable
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorEmpty.cgColor
+                //cell.viewMain.layer.backgroundColor = ColorConstant.colorEmpty.cgColor
+                cell.viewMain.InsideColor = ColorConstant.startEmptyMember
+                cell.viewMain.OutsideColor = ColorConstant.endEmptyMember
+                
                 
             } else if unitsMember[indexPath.row].unit_status == "1" {
+            print("onwer" , indexPath.row)
+            
                 // onwer
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorOwner.cgColor
+               // cell.viewMain.layer.backgroundColor = ColorConstant.colorOwner.cgColor
+                cell.viewMain.InsideColor = ColorConstant.startAvilable
+                cell.viewMain.OutsideColor = ColorConstant.endAvilable
+                
             } else if unitsMember[indexPath.row].unit_status == "2" {
                 // defaulter
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorDefaulter.cgColor
+                //cell.viewMain.layer.backgroundColor = ColorConstant.colorDefaulter.cgColor
+                cell.viewMain.InsideColor = ColorConstant.startDefulter
+                cell.viewMain.OutsideColor = ColorConstant.endDefulter
             }else if unitsMember[indexPath.row].unit_status == "3" {
                 // rent
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorRent.cgColor
+             //   cell.viewMain.layer.backgroundColor = ColorConstant.colorRent.cgColor
+                cell.viewMain.InsideColor = ColorConstant.startRent
+                cell.viewMain.OutsideColor = ColorConstant.endRent
+                
             } else if unitsMember[indexPath.row].unit_status == "4" {
                 // pendeing
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorEmpty.cgColor
+                //cell.viewMain.layer.backgroundColor = ColorConstant.colorEmpty.cgColor
+                cell.viewMain.InsideColor = ColorConstant.startPending
+                cell.viewMain.OutsideColor = ColorConstant.endPending
+                
             }else if unitsMember[indexPath.row].unit_status == "5" {
                 // close
-                cell.viewMain.layer.backgroundColor = ColorConstant.colorClose.cgColor
-            }
+               // cell.viewMain.layer.backgroundColor = ColorConstant.colorClose.cgColor
+                
+                cell.viewMain.InsideColor = ColorConstant.startEmptyMember
+                cell.viewMain.OutsideColor = ColorConstant.endEmptyMember
+                
+            }*/
+            
+            cell.setBackUnit(unit_status: unitsMember[indexPath.row].unit_status)
             cell.lbTitle.text = unitsMember[indexPath.row].unit_name
-            cell.lbName.text = unitsMember[indexPath.row].user_first_name
+            cell.lbName.text = unitsMember[indexPath.row].user_full_name
            if isConversoin {
             
             if unitsMember[indexPath.row].chat_status != "0" {
@@ -200,7 +224,8 @@ extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSo
         let yourWidth = 120 / 2
         
         if isMember {
-            return CGSize(width: yourWidth , height: 57)
+              let yourWidth = viewMain.frame.width / 4
+            return CGSize(width: yourWidth - 5 , height: 90)
         }
         return CGSize(width: yourWidth, height: 40)
     }
@@ -209,6 +234,7 @@ extension FloorSelectionCell : UICollectionViewDelegate , UICollectionViewDataSo
         
         return 0
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 2
     }

@@ -8,6 +8,7 @@
 
 import UIKit
 import XLPagerTabStrip
+import CenteredCollectionView
 
 class TabMemberConversionVC: BaseVC {
     @IBOutlet weak var cvBlocks: UICollectionView!
@@ -16,6 +17,9 @@ class TabMemberConversionVC: BaseVC {
     var  floors = [FloorModelMember]()
     let itemCellFloor = "FloorSelectionCell"
     
+    var centeredCollectionViewFlowLayout: CenteredCollectionViewFlowLayout!
+    
+    
     @IBOutlet weak var cvUnits: UICollectionView!
     var isFirstTimeload = true
     override func viewDidLoad() {
@@ -23,6 +27,23 @@ class TabMemberConversionVC: BaseVC {
         
         cvBlocks.delegate = self
         cvBlocks.dataSource = self
+        
+        
+        
+        
+        centeredCollectionViewFlowLayout = cvBlocks.collectionViewLayout as? CenteredCollectionViewFlowLayout
+        _ = cvBlocks.bounds.width  / 2
+        
+        //        return CGSize(width: yourWidth-4, height: 100)
+        centeredCollectionViewFlowLayout.itemSize = CGSize(
+            width: 60,
+            height: 60
+        )
+        
+        cvBlocks.showsVerticalScrollIndicator = false
+        cvBlocks.showsHorizontalScrollIndicator = false
+        // Modify the collectionView's decelerationRate (REQUIRED STEP)
+        cvBlocks.decelerationRate = UIScrollView.DecelerationRate.fast
         
         
         let inb = UINib(nibName: itemCell, bundle: nil)
@@ -39,6 +60,15 @@ class TabMemberConversionVC: BaseVC {
                                                selector: #selector(clickFloor(_:)),
                                                name: NSNotification.Name(rawValue: "clickFloorChat"),
                                                object: nil)
+         doGetSocietes()
+      addRefreshControlTo(collectionView: cvUnits)
+    }
+    override func pullToRefreshData(_ sender: Any) {
+        self.blocks.removeAll()
+        self.floors.removeAll()
+        cvUnits.reloadData()
+        cvBlocks.reloadData()
+        hidePull()
         
         doGetSocietes()
     }
@@ -132,6 +162,13 @@ class TabMemberConversionVC: BaseVC {
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.reloadInputViews()
+        
+        print("sbfjjfb")
+        
+        
+    }
 }
 extension TabMemberConversionVC : IndicatorInfoProvider {
     
@@ -170,14 +207,20 @@ extension TabMemberConversionVC :  UICollectionViewDelegate , UICollectionViewDa
         
         if blocks[indexPath.row].isSelect {
             // cell.viewTest.backgroundColor = ColorConstant.primaryColor
-            cell.viewTest.backgroundColor = UIColor(named: "ColorPrimary")
-            cell.lbTitle.textColor = UIColor.white
-        } else {
+            cell.viewTest.isHidden = false
+            cell.viewUnselect.isHidden = true
             
-            cell.viewTest.backgroundColor = UIColor(named: "gray_20")
-            cell.lbTitle.textColor = ColorConstant.colorGray90
+        //    cell.lbTitle.textColor = UIColor.white
+        } else {
+            //  setGradintColor(viewGradint: cell.viewTest , color: [ColorConstant.startBlockUnselect.cgColor,ColorConstant.endBlockUnselect.cgColor])
+            cell.viewTest.isHidden = true
+            cell.viewUnselect.isHidden = false
+            
+            //  cell.viewTest.backgroundColor = UIColor(named: "gray_20")
+           // cell.lbTitle.textColor = ColorConstant.colorGray90
         }
         
+         cell.layer.cornerRadius = cell.bounds.height/2
         
         return cell
         
@@ -186,11 +229,26 @@ extension TabMemberConversionVC :  UICollectionViewDelegate , UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == cvUnits {
+            var height = 0
+            
+            if floors.count > 0 {
+                let count = floors[indexPath.row].units.count
+                
+                if   count % 2 == 0 {
+                    let subcount = count / 4
+                    print("sub",subcount)
+                    height = height +   (130 * subcount)
+                } else {
+                    let subcount = count / 4
+                    
+                    height =  (130 * subcount)  + height
+                }
+            }
             let yourWidth = collectionView.bounds.width
-            return CGSize(width: yourWidth-4, height: 100)
+            return CGSize(width: yourWidth-4, height: CGFloat(height))
         }
         
-        return CGSize(width: 80, height: 60)
+        return CGSize(width: 60, height: 60)
     }
     
     
@@ -198,7 +256,11 @@ extension TabMemberConversionVC :  UICollectionViewDelegate , UICollectionViewDa
         
         if collectionView == cvBlocks {
            // let selectedCell = collectionView.cellForItem(at: indexPath) as! BlockMemberCell
-            
+            let currentCenteredPage = centeredCollectionViewFlowLayout.currentCenteredPage
+            if currentCenteredPage != indexPath.row {
+                // trigger a scrollToPage(index: animated:)
+                centeredCollectionViewFlowLayout.scrollToPage(index: indexPath.row, animated: true)
+            }
             self.setDataUtnit(floors: blocks[indexPath.row].floors)
           //  isFirstTimeload = false
             selectItem(index: indexPath.row)
@@ -209,6 +271,25 @@ extension TabMemberConversionVC :  UICollectionViewDelegate , UICollectionViewDa
         
     }
     
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+     //   print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
+     //   print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+        if blocks.count > 0 {
+            self.setDataUtnit(floors: blocks[centeredCollectionViewFlowLayout.currentCenteredPage!].floors)
+            
+            self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
+            
+        }
+        
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+      //  print("Current centered index: \(String(describing: centeredCollectionViewFlowLayout.currentCenteredPage ?? nil))")
+       // print(centeredCollectionViewFlowLayout.currentCenteredPage!)
+        self.selectItem(index: centeredCollectionViewFlowLayout.currentCenteredPage!)
+        
+    }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView == cvBlocks {

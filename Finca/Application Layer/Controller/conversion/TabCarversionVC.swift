@@ -59,4 +59,9 @@ class TabCarversionVC: ButtonBarPagerTabStripViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent // .default
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+      //  tab
+        self.reloadPagerTabStripView()
+    }
 }

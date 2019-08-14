@@ -12,18 +12,25 @@ struct ResponseEvent : Codable{
     let message:String!//" : "Get event success.",
     let status:String!//" : "200"
     let event:[ModelEvent]!
+    let event_completed:[ModelEvent]!
+    
 }
 
 struct ModelEvent : Codable {
-    let event_end_date:String!//" : "2019-07-02 02:38 PM",
-    let event_id:String!//" : "9",
-    let event_description:String!//" : "aaaa1234",
-    let event_start_date:String!//" : "2019-07-02 02:38 PM",
-    let event_title:String!//" : "Event Test",
-    let going_person:String!//" : "1"
-    let notes_person:String! //"notes_person" : "noting",
+     let notes_person:String! //"notes_person" : "noting",
     let numberof_person:String!// "numberof_person" : "5"
-   let hide_status:String!// "5""hide_status" : "0",
+    let event_upcoming_completed : String! //" : "0",
+    let event_start_date : String! //" : "2019-03-23 10:00 AM",
+    let event_id : String! //" : "6",
+    let event_end_date : String! //" : "2019-03-23 01:37 PM",
+    let going_person : String! //" : "1",
+    let event_title : String! //" : "Holi Celebration",
+    let hide_status : String! //" : "0",
+    let total_population : String! //" : "5",
+    let event_image : String! //" : "https:\/\/www.fincasys.com\/img\/event_image\/holi.jpg",
+    let event_description : String! //" : "festival of colors"
+
+    
 }
 
 class EventsVC: BaseVC {
