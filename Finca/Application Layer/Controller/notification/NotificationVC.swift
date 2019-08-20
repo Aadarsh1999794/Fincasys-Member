@@ -12,9 +12,10 @@ import UIKit
 class NotificationVC: BaseVC {
     @IBOutlet weak var cvData: UICollectionView!
     let itemCell = "NotificationCell"
-      var notifications  =  [NotificationModel]()
+    var notifications  =  [NotificationModel]()
     
     @IBOutlet weak var lbNoData: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         cvData.delegate = self
@@ -69,21 +70,21 @@ class NotificationVC: BaseVC {
                     
                     if response.status == "200" {
                         
-                         self.lbNoData.isHidden = true
-                      //  UserDefaults.standard.set(response.chat_status, forKey: StringConstants.CHAT_STATUS)
-                       // UserDefaults.standard.set(response.read_status, forKey: StringConstants.READ_STATUS)
+                        self.lbNoData.isHidden = true
+                        //  UserDefaults.standard.set(response.chat_status, forKey: StringConstants.CHAT_STATUS)
+                        // UserDefaults.standard.set(response.read_status, forKey: StringConstants.READ_STATUS)
                         
                         if self.notifications.count > 0 {
                             self.notifications.removeAll()
-                             self.cvData.reloadData()
+                            self.cvData.reloadData()
                         }
                         self.notifications.append(contentsOf: response.notification)
                         self.cvData.reloadData()
                         
                     }else {
-                         self.lbNoData.isHidden = false
-                      
-                      ///  self.showAlertMessage(title: "Alert", msg: response.message)
+                        self.lbNoData.isHidden = false
+                        
+                        ///  self.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -93,11 +94,13 @@ class NotificationVC: BaseVC {
         
         
     }
+    
     @objc func onclickDelet(sender:UIButton) {
         print("delet", sender.tag)
         
         doDelettNotification(user_notification_id: notifications[sender.tag].user_notification_id)
     }
+    
     func doDelettNotification(user_notification_id:String) {
         
         
@@ -123,7 +126,7 @@ class NotificationVC: BaseVC {
                     
                     if response.status == "200" {
                         
-                     self.doGetData()
+                        self.doGetData()
                         
                     }else {
                         self.showAlertMessage(title: "Alert", msg: response.message)
@@ -147,32 +150,33 @@ extension  NotificationVC :   UICollectionViewDelegate , UICollectionViewDataSou
         cell.lbDesc.text = notifications[indexPath.row].notification_desc
         cell.lbDate.text = notifications[indexPath.row].notification_date
         cell.bDelete.tag = indexPath.row
+        cell.layer.shadowOpacity = 0.3
+        cell.layer.shadowColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        //        cell.layer.shadowOffset = CGSize.zero
+        cell.layer.shadowRadius = 4
         cell.bDelete.addTarget(self, action: #selector(onclickDelet(sender:)), for: .touchUpInside)
         return  cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        
         return notifications.count
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let yourWidth = collectionView.bounds.width
-        return CGSize(width: yourWidth - 5, height: 100)
+        return CGSize(width: yourWidth - 5, height: 80)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         
         return 2
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         
         return 4
     }
-    
     
 }

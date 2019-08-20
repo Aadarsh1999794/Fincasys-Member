@@ -78,6 +78,7 @@ class HomeNavigationMenuController: BaseVC {
         menuData.append(menuCell(title: StringConstants.MENU_CHANGE_PASSWORD,image: "lock",isSelectd: false))
         menuData.append(menuCell(title: StringConstants.MENU_LOGUT,image: "logout",isSelectd: false))
         menuData.append(menuCell(title: StringConstants.MENU_CONTACT_US,image: "mail",isSelectd: false))
+        menuData.append(menuCell(title: StringConstants.MENU_TIMELINE,image: "timeline",isSelectd: false))
         tbvMenuList.reloadData()
         
     }
@@ -232,12 +233,13 @@ class HomeNavigationMenuController: BaseVC {
         }
         else if menuData[index].title == StringConstants.MENU_FACILITY {
             let destiController = self.storyboard!.instantiateViewController(withIdentifier: "idFacilityMainTabVC") as! FacilityMainTabVC
-            
             revealViewController().pushFrontViewController(destiController, animated: true)
-            
-            
         }
-        
+        else if menuData[index].title == StringConstants.MENU_TIMELINE {
+            let storyboard = UIStoryboard(name: "sub", bundle: nil)
+            let destiController = storyboard.instantiateViewController(withIdentifier: "idTimelineVC") as! TimelineVC
+            revealViewController().pushFrontViewController(destiController, animated: true)
+        }
         
         
         

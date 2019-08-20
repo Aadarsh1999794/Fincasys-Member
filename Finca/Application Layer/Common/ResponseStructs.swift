@@ -582,3 +582,240 @@ struct BalancesheetModel: Codable {
         case currentBalance = "current_balance"
     }
 }
+struct MemberDetailResponse: Codable {
+    let userId: String!
+    let societyId: String!
+    let userFullName: String!
+    let userFirstName: String!
+    let userLastName: String!
+    let userMobile: String!
+    let userEmail: String!
+    let userIdProof: String!
+    let userType: String!
+    let blockId: String!
+    let publicMobile: String!
+    let memberDateOfBirth: String!
+    let blockName: String!
+    let floorName: String!
+    let unitName: String!
+    let unitStatus: String!
+    let floorId: String!
+    let unitId: String!
+    let userStatus: String!
+    let userProfilePic: String!
+    let member: [MemberDetailModal]!
+    let emergency: [MemberEmergencyModal]!
+    let employmentStatus: String!
+    let employmentId: String!
+    let userPhone: String!
+    let employmentType: String!
+    let employmentDescription: String!
+    let companyName: String!
+    let designation: String!
+    let companyAddress: String!
+    let companyContactNumber: String!
+    let myParking: [MyParkingModal]!
+    let message: String!
+    let status: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case societyId = "society_id"
+        case userFullName = "user_full_name"
+        case userFirstName = "user_first_name"
+        case userLastName = "user_last_name"
+        case userMobile = "user_mobile"
+        case userEmail = "user_email"
+        case userIdProof = "user_id_proof"
+        case userType = "user_type"
+        case blockId = "block_id"
+        case publicMobile = "public_mobile"
+        case memberDateOfBirth = "member_date_of_birth"
+        case blockName = "block_name"
+        case floorName = "floor_name"
+        case unitName = "unit_name"
+        case unitStatus = "unit_status"
+        case floorId = "floor_id"
+        case unitId = "unit_id"
+        case userStatus = "user_status"
+        case userProfilePic = "user_profile_pic"
+        case member = "member"
+        case emergency = "emergency"
+        case employmentStatus = "employment_status"
+        case employmentId = "employment_id"
+        case userPhone = "user_phone"
+        case employmentType = "employment_type"
+        case employmentDescription = "employment_description"
+        case companyName = "company_name"
+        case designation = "designation"
+        case companyAddress = "company_address"
+        case companyContactNumber = "company_contact_number"
+        case myParking = "myParking"
+        case message = "message"
+        case status = "status"
+    }
+}
+
+// MARK: - Emergency
+struct MemberEmergencyModal: Codable {
+    let emergencyContactId: String!
+    let personName: String!
+    let personMobile: String!
+    let relationId: String!
+    let relation: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case emergencyContactId = "emergencyContact_id"
+        case personName = "person_name"
+        case personMobile = "person_mobile"
+        case relationId = "relation_id"
+        case relation = "relation"
+    }
+}
+
+// MARK: - Member
+struct MemberDetailModal: Codable {
+    let userId: String!
+    let userFirstName: String!
+    let userLastName: String!
+    let userMobile: String!
+    let userProfilePic: String!
+    let memberDateOfBirth: String!
+    let memberAge: String!
+    let memberRelationName: String!
+    let userStatus: String!
+    let memberStatus: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case userFirstName = "user_first_name"
+        case userLastName = "user_last_name"
+        case userMobile = "user_mobile"
+        case userProfilePic = "user_profile_pic"
+        case memberDateOfBirth = "member_date_of_birth"
+        case memberAge = "member_age"
+        case memberRelationName = "member_relation_name"
+        case userStatus = "user_status"
+        case memberStatus = "member_status"
+    }
+}
+
+// MARK: - MyParking
+struct MyParkingModal: Codable {
+    let parkingId: String!
+    let societyParkingId: String!
+    let blockId: String!
+    let floorId: String!
+    let unitId: String!
+    let parkingName: String!
+    let parkingType: String!
+    let parkingStatus: String!
+    let vehicleNo: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case parkingId = "parking_id"
+        case societyParkingId = "society_parking_id"
+        case blockId = "block_id"
+        case floorId = "floor_id"
+        case unitId = "unit_id"
+        case parkingName = "parking_name"
+        case parkingType = "parking_type"
+        case parkingStatus = "parking_status"
+        case vehicleNo = "vehicle_no"
+    }
+}
+struct FeedResponse: Codable {
+    let feed: [FeedModel]!
+    let message: String!
+    let status: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case feed = "feed"
+        case message = "message"
+        case status = "status"
+    }
+}
+
+// MARK: - Feed
+struct FeedModel: Codable {
+    let feedId: String!
+    let societyId: String!
+    let feedMsg: String!
+    let userName: String!
+    let blockName: String!
+    let userId: String!
+    let userProfilePic: String!
+    let feedImg: [FeedImgModel]!
+    let feedType: String!
+    let modifyDate: String!
+    let like: [LikeModel]!
+    let likeStatus: String!
+    let comment: [CommentModel]!
+    let commentStatus: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case feedId = "feed_id"
+        case societyId = "society_id"
+        case feedMsg = "feed_msg"
+        case userName = "user_name"
+        case blockName = "block_name"
+        case userId = "user_id"
+        case userProfilePic = "user_profile_pic"
+        case feedImg = "feed_img"
+        case feedType = "feed_type"
+        case modifyDate = "modify_date"
+        case like = "like"
+        case likeStatus = "like_status"
+        case comment = "comment"
+        case commentStatus = "comment_status"
+    }
+}
+
+// MARK: - Comment
+struct CommentModel: Codable {
+    let commentsId: String!
+    let feedId: String!
+    let msg: String!
+    let userName: String!
+    let blockName: String!
+    let userId: String!
+    let modifyDate: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case commentsId = "comments_id"
+        case feedId = "feed_id"
+        case msg = "msg"
+        case userName = "user_name"
+        case blockName = "block_name"
+        case userId = "user_id"
+        case modifyDate = "modify_date"
+    }
+}
+
+// MARK: - FeedImg
+struct FeedImgModel: Codable {
+    let feedImg: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case feedImg = "feed_img"
+    }
+}
+
+// MARK: - Like
+struct LikeModel: Codable {
+    let likeId: String!
+    let feedId: String!
+    let userId: String!
+    let userName: String!
+    let blockName: String!
+    let modifyDate: String!
+    
+    enum CodingKeys: String, CodingKey {
+        case likeId = "like_id"
+        case feedId = "feed_id"
+        case userId = "user_id"
+        case userName = "user_name"
+        case blockName = "block_name"
+        case modifyDate = "modify_date"
+    }
+}

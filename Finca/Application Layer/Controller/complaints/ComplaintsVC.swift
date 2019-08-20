@@ -36,7 +36,8 @@ class ComplaintsVC: BaseVC {
         tbvComplain.delegate = self
         tbvComplain.dataSource = self
         addRefreshControlTo(tableView: tbvComplain)
-        
+        tbvComplain.estimatedRowHeight = 100
+        tbvComplain.rowHeight = UITableView.automaticDimension
     }
     
     
@@ -124,6 +125,7 @@ class ComplaintsVC: BaseVC {
             }
         }
     }
+    
     @objc func btnDeleteTapped(sender:UIButton){
         let index = sender.tag
         let alert = UIAlertController(title: "", message:"Are you sure you want to delete", preferredStyle: .alert)
@@ -137,6 +139,7 @@ class ComplaintsVC: BaseVC {
         }))
         self.present(alert, animated: true)
     }
+    
     func onClickDelete(index:Int) {
         print("delete success")
         self.showProgress()
@@ -195,29 +198,35 @@ class ComplaintsVC: BaseVC {
     }
 }
 extension ComplaintsVC : UITableViewDelegate,UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ComplainList.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tbvComplain.dequeueReusableCell(withIdentifier: itemCell, for: indexPath)as! ComplainCell
         cell.lblCmpTitle.text = ComplainList[indexPath.row].compalainTitle
         cell.lblCmpDesc.text = ComplainList[indexPath.row].complainDescription
         switch (ComplainList[indexPath.row].complainStatus) {
         case "0":
-            cell.lblCmpStatus.text = "Open"
+            cell.lblCmpStatus.text = "  Open  "
             cell.viewBtnEdit.isHidden = true
+            cell.viewBtnDelete.isHidden = false
             break;
         case "1":
-            cell.lblCmpStatus.text = "Close"
+            cell.lblCmpStatus.text = "  Close  "
             cell.viewBtnEdit.isHidden = false
+            cell.viewBtnDelete.isHidden = true
             break;
         case "2":
-            cell.lblCmpStatus.text = "Re-Open"
+            cell.lblCmpStatus.text = "  Re-Open  "
             cell.viewBtnEdit.isHidden = true
+            cell.viewBtnDelete.isHidden = false
             break;
         case "3":
-            cell.lblCmpStatus.text = "InProgress.."
+            cell.lblCmpStatus.text = "  In Process..  "
             cell.viewBtnEdit.isHidden = true
+            cell.viewBtnDelete.isHidden = false
             break;
             
         default:
@@ -234,7 +243,7 @@ extension ComplaintsVC : UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return UITableView.automaticDimension
         
     }
     

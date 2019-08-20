@@ -115,6 +115,8 @@
 		2B0EB4B222C21AAF00C752C5 /* DocumentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0EB4B122C21AAF00C752C5 /* DocumentsVC.swift */; };
 		2B0EB4B622C234AD00C752C5 /* DocumentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0EB4B422C234AD00C752C5 /* DocumentCell.swift */; };
 		2B0EB4B722C234AD00C752C5 /* DocumentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B0EB4B522C234AD00C752C5 /* DocumentCell.xib */; };
+		2B1479D02302E85B00838BF7 /* BasicDetailsFragmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1479CF2302E85B00838BF7 /* BasicDetailsFragmentVC.swift */; };
+		2B1479D32302E87A00838BF7 /* ProfessionalDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1479D22302E87A00838BF7 /* ProfessionalDetailsVC.swift */; };
 		2B25CE1C22CA10AB005EDC50 /* ComplaintsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25CE1B22CA10AB005EDC50 /* ComplaintsVC.swift */; };
 		2B25CE1E22CA14A1005EDC50 /* AddComplaintsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25CE1D22CA14A1005EDC50 /* AddComplaintsVC.swift */; };
 		2B27588C22B3671800E0DC2E /* BillAndFundDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B27588B22B3671800E0DC2E /* BillAndFundDetailsVC.swift */; };
@@ -168,6 +170,10 @@
 		2B52090122AF817E003B6662 /* SocietyRegistrationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5208FD22AF817D003B6662 /* SocietyRegistrationCell.swift */; };
 		2B52090422AFA4D3003B6662 /* HomeScreenCvCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B52090222AFA4D3003B6662 /* HomeScreenCvCell.swift */; };
 		2B52090522AFA4D3003B6662 /* HomeScreenCvCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B52090322AFA4D3003B6662 /* HomeScreenCvCell.xib */; };
+		2B57506D230A832D009E7ABD /* TimeLineImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B57506B230A832D009E7ABD /* TimeLineImageCell.swift */; };
+		2B57506E230A832D009E7ABD /* TimeLineImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B57506C230A832D009E7ABD /* TimeLineImageCell.xib */; };
+		2B575072230A8372009E7ABD /* TimeLineTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B575070230A8372009E7ABD /* TimeLineTextCell.swift */; };
+		2B575073230A8372009E7ABD /* TimeLineTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B575071230A8372009E7ABD /* TimeLineTextCell.xib */; };
 		2B5D67F022C63C4E00CBC4BB /* VotingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5D67EE22C63C4E00CBC4BB /* VotingCell.swift */; };
 		2B5D67F122C63C4E00CBC4BB /* VotingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B5D67EF22C63C4E00CBC4BB /* VotingCell.xib */; };
 		2B5EAEC522AFE5C40089E068 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5EAEC322AFE5C40089E068 /* iCarousel.m */; };
@@ -181,6 +187,7 @@
 		2B7D47C322D3043900B791B5 /* GallerySlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B7D47BF22D3043900B791B5 /* GallerySlider.xib */; };
 		2B7D47CC22D32DDE00B791B5 /* BalanceSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7D47CA22D32DDE00B791B5 /* BalanceSheetCell.swift */; };
 		2B7D47CD22D32DDE00B791B5 /* BalanceSheetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B7D47CB22D32DDE00B791B5 /* BalanceSheetCell.xib */; };
+		2B909D33230A62080013B04F /* TimelineVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B909D32230A62080013B04F /* TimelineVC.swift */; };
 		2B9B0E6D229E9DB800734FCA /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B0E6C229E9DB800734FCA /* SWRevealViewController.m */; };
 		2B9B0E70229EA07200734FCA /* HomeNavigationMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B0E6F229EA07200734FCA /* HomeNavigationMenuController.swift */; };
 		2B9B0E72229EB69800734FCA /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B0E71229EB69800734FCA /* HomeVC.swift */; };
@@ -212,7 +219,7 @@
 		2BFC8FD522B0B73300115AD8 /* HomeSliderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BFC8FD322B0B73300115AD8 /* HomeSliderCell.xib */; };
 		2BFC8FD722B0C35C00115AD8 /* ServiceNameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC8FD622B0C35C00115AD8 /* ServiceNameConstants.swift */; };
 		2BFC8FD922B0DCD200115AD8 /* ResponseStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFC8FD822B0DCD200115AD8 /* ResponseStructs.swift */; };
-		BAA3C2451B0D7546DBCC12B6 /* Pods_Finca.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F36108B757A1A3EB54C5F854 /* Pods_Finca.framework */; };
+		59462C38743DC158A4A3DDE8 /* Pods_Finca.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 863EA337D4DAA51B26430F23 /* Pods_Finca.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -329,6 +336,8 @@
 		2B0EB4B122C21AAF00C752C5 /* DocumentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsVC.swift; sourceTree = "<group>"; };
 		2B0EB4B422C234AD00C752C5 /* DocumentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCell.swift; sourceTree = "<group>"; };
 		2B0EB4B522C234AD00C752C5 /* DocumentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentCell.xib; sourceTree = "<group>"; };
+		2B1479CF2302E85B00838BF7 /* BasicDetailsFragmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicDetailsFragmentVC.swift; sourceTree = "<group>"; };
+		2B1479D22302E87A00838BF7 /* ProfessionalDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfessionalDetailsVC.swift; sourceTree = "<group>"; };
 		2B25CE1B22CA10AB005EDC50 /* ComplaintsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplaintsVC.swift; sourceTree = "<group>"; };
 		2B25CE1D22CA14A1005EDC50 /* AddComplaintsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddComplaintsVC.swift; sourceTree = "<group>"; };
 		2B27588B22B3671800E0DC2E /* BillAndFundDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillAndFundDetailsVC.swift; sourceTree = "<group>"; };
@@ -382,6 +391,10 @@
 		2B5208FD22AF817D003B6662 /* SocietyRegistrationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocietyRegistrationCell.swift; sourceTree = "<group>"; };
 		2B52090222AFA4D3003B6662 /* HomeScreenCvCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenCvCell.swift; sourceTree = "<group>"; };
 		2B52090322AFA4D3003B6662 /* HomeScreenCvCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeScreenCvCell.xib; sourceTree = "<group>"; };
+		2B57506B230A832D009E7ABD /* TimeLineImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineImageCell.swift; sourceTree = "<group>"; };
+		2B57506C230A832D009E7ABD /* TimeLineImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeLineImageCell.xib; sourceTree = "<group>"; };
+		2B575070230A8372009E7ABD /* TimeLineTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineTextCell.swift; sourceTree = "<group>"; };
+		2B575071230A8372009E7ABD /* TimeLineTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeLineTextCell.xib; sourceTree = "<group>"; };
 		2B5D67EE22C63C4E00CBC4BB /* VotingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingCell.swift; sourceTree = "<group>"; };
 		2B5D67EF22C63C4E00CBC4BB /* VotingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VotingCell.xib; sourceTree = "<group>"; };
 		2B5EAEC322AFE5C40089E068 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
@@ -398,6 +411,7 @@
 		2B7D47BF22D3043900B791B5 /* GallerySlider.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GallerySlider.xib; sourceTree = "<group>"; };
 		2B7D47CA22D32DDE00B791B5 /* BalanceSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceSheetCell.swift; sourceTree = "<group>"; };
 		2B7D47CB22D32DDE00B791B5 /* BalanceSheetCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BalanceSheetCell.xib; sourceTree = "<group>"; };
+		2B909D32230A62080013B04F /* TimelineVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineVC.swift; sourceTree = "<group>"; };
 		2B9B0E6B229E9DB800734FCA /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		2B9B0E6C229E9DB800734FCA /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		2B9B0E6F229EA07200734FCA /* HomeNavigationMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationMenuController.swift; sourceTree = "<group>"; };
@@ -430,9 +444,9 @@
 		2BFC8FD322B0B73300115AD8 /* HomeSliderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSliderCell.xib; sourceTree = "<group>"; };
 		2BFC8FD622B0C35C00115AD8 /* ServiceNameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceNameConstants.swift; sourceTree = "<group>"; };
 		2BFC8FD822B0DCD200115AD8 /* ResponseStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStructs.swift; sourceTree = "<group>"; };
-		91CF2A5579D1295D4632ABC2 /* Pods-Finca.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Finca.release.xcconfig"; path = "Target Support Files/Pods-Finca/Pods-Finca.release.xcconfig"; sourceTree = "<group>"; };
-		9F460AA6C677C6672916842E /* Pods-Finca.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Finca.debug.xcconfig"; path = "Target Support Files/Pods-Finca/Pods-Finca.debug.xcconfig"; sourceTree = "<group>"; };
-		F36108B757A1A3EB54C5F854 /* Pods_Finca.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Finca.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		42B6890462F66A62257419C8 /* Pods-Finca.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Finca.debug.xcconfig"; path = "Target Support Files/Pods-Finca/Pods-Finca.debug.xcconfig"; sourceTree = "<group>"; };
+		5534F216F90209FF7092E5CD /* Pods-Finca.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Finca.release.xcconfig"; path = "Target Support Files/Pods-Finca/Pods-Finca.release.xcconfig"; sourceTree = "<group>"; };
+		863EA337D4DAA51B26430F23 /* Pods_Finca.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Finca.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -440,13 +454,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAA3C2451B0D7546DBCC12B6 /* Pods_Finca.framework in Frameworks */,
+				59462C38743DC158A4A3DDE8 /* Pods_Finca.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22ADCD0C1323B2C42586FA0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				863EA337D4DAA51B26430F23 /* Pods_Finca.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2559F19622A2891C006181A8 /* registration */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,7 +518,7 @@
 				258CD0172297D43B00AAB8E6 /* Products */,
 				5FFF6EC5161C73368355248F /* Pods */,
 				2B5208F222AF7852003B6662 /* Recovered References */,
-				823F75E4FDCA94263855EA3E /* Frameworks */,
+				22ADCD0C1323B2C42586FA0B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -595,6 +617,7 @@
 		258CD0312297D5C900AAB8E6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				2B909D31230A61E30013B04F /* timeline */,
 				25FB98F622D5DDC4003B6C94 /* contact us */,
 				25FB98F322D596A8003B6C94 /* sos */,
 				2572F82B22D4901A00A16F46 /* change password */,
@@ -750,6 +773,7 @@
 		25C983B72298205D00F2DF3A /* xib */ = {
 			isa = PBXGroup;
 			children = (
+				2B57506A230A8300009E7ABD /* timeline */,
 				25B5513C22D70266003FE381 /* location */,
 				25E03A0122D0CAA5006BE961 /* notification */,
 				25E039F222D061E5006BE961 /* facility */,
@@ -891,6 +915,15 @@
 			path = documents;
 			sourceTree = "<group>";
 		};
+		2B1479CE2302E06700838BF7 /* member detail fragments */ = {
+			isa = PBXGroup;
+			children = (
+				2B1479CF2302E85B00838BF7 /* BasicDetailsFragmentVC.swift */,
+				2B1479D22302E87A00838BF7 /* ProfessionalDetailsVC.swift */,
+			);
+			path = "member detail fragments";
+			sourceTree = "<group>";
+		};
 		2B25CE1A22CA101C005EDC50 /* complaints */ = {
 			isa = PBXGroup;
 			children = (
@@ -928,6 +961,7 @@
 		2B284CCD22B9EF8F00CF1AE0 /* member */ = {
 			isa = PBXGroup;
 			children = (
+				2B1479CE2302E06700838BF7 /* member detail fragments */,
 				2B284CCE22B9EF8F00CF1AE0 /* MemberDetailVC.swift */,
 				2B284CCF22B9EF8F00CF1AE0 /* MemberVC.swift */,
 			);
@@ -1099,6 +1133,17 @@
 			path = dailogs;
 			sourceTree = "<group>";
 		};
+		2B57506A230A8300009E7ABD /* timeline */ = {
+			isa = PBXGroup;
+			children = (
+				2B57506B230A832D009E7ABD /* TimeLineImageCell.swift */,
+				2B57506C230A832D009E7ABD /* TimeLineImageCell.xib */,
+				2B575070230A8372009E7ABD /* TimeLineTextCell.swift */,
+				2B575071230A8372009E7ABD /* TimeLineTextCell.xib */,
+			);
+			path = timeline;
+			sourceTree = "<group>";
+		};
 		2B5EAEC222AFE5C40089E068 /* iCarousel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1137,6 +1182,14 @@
 				2B7D47CB22D32DDE00B791B5 /* BalanceSheetCell.xib */,
 			);
 			path = "balance sheet cell";
+			sourceTree = "<group>";
+		};
+		2B909D31230A61E30013B04F /* timeline */ = {
+			isa = PBXGroup;
+			children = (
+				2B909D32230A62080013B04F /* TimelineVC.swift */,
+			);
+			path = timeline;
 			sourceTree = "<group>";
 		};
 		2B9B0E6A229E9DB800734FCA /* Navigation view */ = {
@@ -1280,18 +1333,10 @@
 		5FFF6EC5161C73368355248F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9F460AA6C677C6672916842E /* Pods-Finca.debug.xcconfig */,
-				91CF2A5579D1295D4632ABC2 /* Pods-Finca.release.xcconfig */,
+				42B6890462F66A62257419C8 /* Pods-Finca.debug.xcconfig */,
+				5534F216F90209FF7092E5CD /* Pods-Finca.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		823F75E4FDCA94263855EA3E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F36108B757A1A3EB54C5F854 /* Pods_Finca.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1301,11 +1346,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 258CD0282297D43F00AAB8E6 /* Build configuration list for PBXNativeTarget "Finca" */;
 			buildPhases = (
-				D6BF763258C4769180B7F7F2 /* [CP] Check Pods Manifest.lock */,
+				17A133FC2028B065748B46C2 /* [CP] Check Pods Manifest.lock */,
 				258CD0122297D43B00AAB8E6 /* Sources */,
 				258CD0132297D43B00AAB8E6 /* Frameworks */,
 				258CD0142297D43B00AAB8E6 /* Resources */,
-				8371C679583CAA7AAF637236 /* [CP] Embed Pods Frameworks */,
+				8D54173ED919434E87DAF077 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1389,6 +1434,7 @@
 				2BFC8FD522B0B73300115AD8 /* HomeSliderCell.xib in Resources */,
 				2BEFACF522D0CD2000B4B983 /* EmergencyContactCell.xib in Resources */,
 				2B284CDC22B9EFC500CF1AE0 /* SendChatCell.xib in Resources */,
+				2B575073230A8372009E7ABD /* TimeLineTextCell.xib in Resources */,
 				2B0EB4B722C234AD00C752C5 /* DocumentCell.xib in Resources */,
 				2BC48F6322B234D4006BF433 /* FundCell.xib in Resources */,
 				2B284CDB22B9EFC500CF1AE0 /* RecievedCell.xib in Resources */,
@@ -1402,6 +1448,7 @@
 				25B5514022D702A5003FE381 /* LocationCell.xib in Resources */,
 				2B284D0622B9FAF800CF1AE0 /* EmployeeListCell.xib in Resources */,
 				2B284CFA22B9F79400CF1AE0 /* MemberParkingCell.xib in Resources */,
+				2B57506E230A832D009E7ABD /* TimeLineImageCell.xib in Resources */,
 				258CD0212297D43F00AAB8E6 /* Assets.xcassets in Resources */,
 				258CD01F2297D43B00AAB8E6 /* Main.storyboard in Resources */,
 				2559F1A022A2A561006181A8 /* FloorSelectionCell.xib in Resources */,
@@ -1412,24 +1459,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8371C679583CAA7AAF637236 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D6BF763258C4769180B7F7F2 /* [CP] Check Pods Manifest.lock */ = {
+		17A133FC2028B065748B46C2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1449,6 +1479,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D54173ED919434E87DAF077 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Finca/Pods-Finca-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1472,6 +1519,7 @@
 				25C983A922980CE600F2DF3A /* NVActivityIndicatorAnimationLineScale.swift in Sources */,
 				25C983A422980CE600F2DF3A /* NVActivityIndicatorAnimationCircleStrokeSpin.swift in Sources */,
 				258CD03C2297F62A00AAB8E6 /* ButtonWithShadow.swift in Sources */,
+				2B575072230A8372009E7ABD /* TimeLineTextCell.swift in Sources */,
 				2B5208F922AF8107003B6662 /* DailogFamilyMember.swift in Sources */,
 				25C983602298054F00F2DF3A /* AlamofireSingleTon.swift in Sources */,
 				2B2D14D322CF4C900029B2C4 /* PollingProgressbarCell.swift in Sources */,
@@ -1532,8 +1580,10 @@
 				2B476A0E22FD5337007E033F /* ProfileprofessionalDetails.swift in Sources */,
 				25C983AA22980CE600F2DF3A /* NVActivityIndicatorAnimationBallScaleRippleMultiple.swift in Sources */,
 				2B284CFC22B9F79400CF1AE0 /* ParkingSlotCell.swift in Sources */,
+				2B1479D32302E87A00838BF7 /* ProfessionalDetailsVC.swift in Sources */,
 				2B62121D22C0D1EC00FE8AF9 /* GallerySliderVC.swift in Sources */,
 				25C9839A22980CE600F2DF3A /* NVActivityIndicatorAnimationBallScale.swift in Sources */,
+				2B909D33230A62080013B04F /* TimelineVC.swift in Sources */,
 				2559F19F22A2A561006181A8 /* FloorSelectionCell.swift in Sources */,
 				2B5EAEC522AFE5C40089E068 /* iCarousel.m in Sources */,
 				2B25CE1E22CA14A1005EDC50 /* AddComplaintsVC.swift in Sources */,
@@ -1574,7 +1624,7 @@
 				2559F19C22A28AA4006181A8 /* SelectBlockAndRoomVC.swift in Sources */,
 				25C983A622980CE600F2DF3A /* NVActivityIndicatorAnimationTriangleSkewSpin.swift in Sources */,
 				2B9B0E70229EA07200734FCA /* HomeNavigationMenuController.swift in Sources */,
-				25001E892303D6600059FA9D /* DashedBorderView.swift in Sources */,
+				2B1479D02302E85B00838BF7 /* BasicDetailsFragmentVC.swift in Sources */,
 				2B5D67F022C63C4E00CBC4BB /* VotingCell.swift in Sources */,
 				2BEBDF4122D44FEF006AE21F /* BalanceSheetVc.swift in Sources */,
 				2B284CCA22B9EA1200CF1AE0 /* SplashVC.swift in Sources */,
@@ -1595,6 +1645,7 @@
 				2B476A1022FD5437007E033F /* ProfileChangePassword.swift in Sources */,
 				25C9838F22980CE600F2DF3A /* NVActivityIndicatorShape.swift in Sources */,
 				2559F19322A2423C006181A8 /* OwnedDataSelectVC.swift in Sources */,
+				2B57506D230A832D009E7ABD /* TimeLineImageCell.swift in Sources */,
 				25C983B222980CE600F2DF3A /* NVActivityIndicatorAnimationOrbit.swift in Sources */,
 				259E6F4F2302BE1F00A4C40B /* RadialGradientView.swift in Sources */,
 				25AF673C22BB883B00637C1C /* ProfileVC.swift in Sources */,
@@ -1762,7 +1813,7 @@
 		};
 		258CD0292297D43F00AAB8E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F460AA6C677C6672916842E /* Pods-Finca.debug.xcconfig */;
+			baseConfigurationReference = 42B6890462F66A62257419C8 /* Pods-Finca.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Finca/Finca.entitlements;

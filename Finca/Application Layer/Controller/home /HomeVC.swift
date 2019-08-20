@@ -409,7 +409,6 @@ extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollect
         case "EventsVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idEventsVC")as! EventsVC
             self.navigationController?.pushViewController(nextVC, animated: true )
-            
             break;
         
         case "NoticeVC":
