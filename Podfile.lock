@@ -109,22 +109,12 @@ DEPENDENCIES:
   - XLPagerTabStrip (~> 9.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Alamofire
     - CenteredCollectionView
     - Cosmos
-    - EzPopup
-    - GKActionSheetPicker
-    - Hero
-    - lottie-ios
-    - nanopb
-    - NVActivityIndicatorView
-    - Protobuf
-    - SwiftyJSON
-    - Toast-Swift
-    - XLPagerTabStrip
-  trunk:
     - DropDown
+    - EzPopup
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -133,12 +123,20 @@ SPEC REPOS:
     - FirebaseCoreDiagnosticsInterop
     - FirebaseInstanceID
     - FirebaseMessaging
+    - GKActionSheetPicker
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
+    - Hero
     - Kingfisher
+    - lottie-ios
     - nanopb
+    - NVActivityIndicatorView
+    - Protobuf
+    - SwiftyJSON
+    - Toast-Swift
+    - XLPagerTabStrip
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -169,6 +167,6 @@ SPEC CHECKSUMS:
   Toast-Swift: 36f4720243c8582c2be243a60a51e193c761f541
   XLPagerTabStrip: 61c57fd61f611ee5f01ff1495ad6fbee8bf496c5
 
-PODFILE CHECKSUM: 2914c517d9376e86c6942554231c259197631323
+PODFILE CHECKSUM: 6a88340af13ce99284b6c96b52c15570bbe97c3f
 
 COCOAPODS: 1.8.0.beta.1

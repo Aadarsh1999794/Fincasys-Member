@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25001E892303D6600059FA9D /* DashedBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25001E882303D6600059FA9D /* DashedBorderView.swift */; };
 		2502414222F0203D00A24026 /* DailogFacilityBookVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502414122F0203D00A24026 /* DailogFacilityBookVC.swift */; };
 		2502414422F159D500A24026 /* InvoiceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2502414322F159D500A24026 /* InvoiceVC.swift */; };
 		250BE7EE22F31BB800C8882C /* AboutSelfVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250BE7ED22F31BB800C8882C /* AboutSelfVC.swift */; };
@@ -94,6 +93,7 @@
 		25C983B422980DFD00F2DF3A /* NetworkAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C983B322980DFD00F2DF3A /* NetworkAPI.swift */; };
 		25C983B622981CF600F2DF3A /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C983B522981CF600F2DF3A /* StringConstants.swift */; };
 		25C983BE2298232A00F2DF3A /* SocietyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C983BD2298232A00F2DF3A /* SocietyVC.swift */; };
+		25CB3B89230BAF670084D236 /* DashedBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25CB3B88230BAF670084D236 /* DashedBorderView.swift */; };
 		25CDC92122B0BA5D004527EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25CDC92022B0BA5C004527EA /* GoogleService-Info.plist */; };
 		25E039ED22D055FE006BE961 /* FacilityMainTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E039EC22D055FE006BE961 /* FacilityMainTabVC.swift */; };
 		25E039EF22D0565B006BE961 /* TabMyFacilityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E039EE22D0565B006BE961 /* TabMyFacilityVC.swift */; };
@@ -223,7 +223,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		25001E882303D6600059FA9D /* DashedBorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedBorderView.swift; sourceTree = "<group>"; };
 		2502414122F0203D00A24026 /* DailogFacilityBookVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailogFacilityBookVC.swift; sourceTree = "<group>"; };
 		2502414322F159D500A24026 /* InvoiceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvoiceVC.swift; sourceTree = "<group>"; };
 		2506D75922A52C96008F956E /* DailogFamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailogFamilyMember.swift; sourceTree = "<group>"; };
@@ -314,6 +313,7 @@
 		25C983B322980DFD00F2DF3A /* NetworkAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAPI.swift; sourceTree = "<group>"; };
 		25C983B522981CF600F2DF3A /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		25C983BD2298232A00F2DF3A /* SocietyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocietyVC.swift; sourceTree = "<group>"; };
+		25CB3B88230BAF670084D236 /* DashedBorderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedBorderView.swift; sourceTree = "<group>"; };
 		25CDC92022B0BA5C004527EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		25CDC92222B0BD37004527EA /* Finca.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Finca.entitlements; sourceTree = "<group>"; };
 		25E039EC22D055FE006BE961 /* FacilityMainTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilityMainTabVC.swift; sourceTree = "<group>"; };
@@ -600,8 +600,8 @@
 				2BFC8FD622B0C35C00115AD8 /* ServiceNameConstants.swift */,
 				2BFC8FD822B0DCD200115AD8 /* ResponseStructs.swift */,
 				259E6F4E2302BE1F00A4C40B /* RadialGradientView.swift */,
-				25001E882303D6600059FA9D /* DashedBorderView.swift */,
 				254F792A23042C450042D445 /* RadialGradientSqureView.swift */,
+				25CB3B88230BAF670084D236 /* DashedBorderView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1350,7 +1350,7 @@
 				258CD0122297D43B00AAB8E6 /* Sources */,
 				258CD0132297D43B00AAB8E6 /* Frameworks */,
 				258CD0142297D43B00AAB8E6 /* Resources */,
-				8D54173ED919434E87DAF077 /* [CP] Embed Pods Frameworks */,
+				5B9567247B917986B97749B4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1481,7 +1481,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8D54173ED919434E87DAF077 /* [CP] Embed Pods Frameworks */ = {
+		5B9567247B917986B97749B4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1530,6 +1530,7 @@
 				25E03A0422D0CACE006BE961 /* NotificationCell.swift in Sources */,
 				2B284D0522B9FAF800CF1AE0 /* EmployeeListCell.swift in Sources */,
 				2B284CD122B9EF8F00CF1AE0 /* MemberDetailVC.swift in Sources */,
+				25CB3B89230BAF670084D236 /* DashedBorderView.swift in Sources */,
 				2B284CEC22B9F75A00CF1AE0 /* TabMyVC.swift in Sources */,
 				2B0EB4B622C234AD00C752C5 /* DocumentCell.swift in Sources */,
 				2B284CE622B9F13700CF1AE0 /* BlockMemberCell.swift in Sources */,
@@ -1837,7 +1838,7 @@
 		};
 		258CD02A2297D43F00AAB8E6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91CF2A5579D1295D4632ABC2 /* Pods-Finca.release.xcconfig */;
+			baseConfigurationReference = 5534F216F90209FF7092E5CD /* Pods-Finca.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Finca/Finca.entitlements;
