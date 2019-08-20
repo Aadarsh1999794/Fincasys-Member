@@ -33,6 +33,7 @@ struct ColorConstant {
     static let green = #colorLiteral(red: 0.4, green: 0.7333333333, blue: 0.4156862745, alpha: 1)
     static let green600 = #colorLiteral(red: 0.262745098, green: 0.6274509804, blue: 0.2784313725, alpha: 1)
      static let green400 = #colorLiteral(red: 0.4, green: 0.7333333333, blue: 0.4156862745, alpha: 1)
+     static let green500 = #colorLiteral(red: 0.2980392157, green: 0.6862745098, blue: 0.3137254902, alpha: 1)
     
     static let yellow400 = #colorLiteral(red: 0.9764705882, green: 0.6588235294, blue: 0.1450980392, alpha: 1)
       static let colorP = #colorLiteral(red: 0.3960784314, green: 0.2235294118, blue: 0.4549019608, alpha: 1)
@@ -73,5 +74,6 @@ struct ColorConstant {
 
     static let startPending =  #colorLiteral(red: 0.9215686275, green: 0.3882352941, blue: 0.262745098, alpha: 1)
     static let endPending =  #colorLiteral(red: 0.9725490196, green: 0.2862745098, blue: 0.1254901961, alpha: 1)
+    static let gary_60 =  #colorLiteral(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
 
 }

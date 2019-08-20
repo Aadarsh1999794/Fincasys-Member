@@ -18,6 +18,9 @@ class EmployeeListCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        ivImage.layer.cornerRadius = 10
+        ivImage.clipsToBounds = true
+        
     }
 
 }

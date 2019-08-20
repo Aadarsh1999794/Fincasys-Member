@@ -38,7 +38,11 @@ class ResourceEmployeeListVC: BaseVC {
     var emp_type_id:String!
     var employees = [ModelEmployeeList]()
     var filteredArray = [ModelEmployeeList]()
+    @IBOutlet weak var ivSearch: UIImageView!
+    @IBOutlet weak var ivClose: UIImageView!
     
+    
+    @IBOutlet weak var lbNoData: UILabel!
     @IBOutlet weak var bBack: UIButton!
     var shouldShowSearchResults = false
     
@@ -46,32 +50,70 @@ class ResourceEmployeeListVC: BaseVC {
         super.viewDidLoad()
         cvData.delegate = self
         cvData.dataSource = self
-        changeButtonImageColor(btn: bBack, image: "back", color: UIColor.white)
+      //  changeButtonImageColor(btn: bBack, image: "back", color: UIColor.white)
         let inb = UINib(nibName: itemCell, bundle: nil)
         cvData.register(inb, forCellWithReuseIdentifier: itemCell)
         
-        // Do any additional setup after loading the view.
+        ivSearch.setImageColor(color: ColorConstant.colorP)
+        ivClose.setImageColor(color: ColorConstant.colorP)
         tfSearch.delegate = self
+        tfSearch.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: UIControl.Event.editingChanged)
+        ivClose.isHidden = true
+          lbNoData.isHidden = true
         doGetEmployes()
     }
+    func hideView() {
+        
+        if filteredArray.count == 0 {
+            lbNoData.isHidden = false
+            
+        } else {
+            lbNoData.isHidden = true
+            
+        }
+    }
+    
+    
+    @objc func textFieldDidChange(textField: UITextField) {
+        
+        //your code
+        
+        filteredArray = textField.text!.isEmpty ? employees : employees.filter({ (item:ModelEmployeeList) -> Bool in
+            
+            return item.emp_name.lowercased().range(of: textField.text!, options: .caseInsensitive, range: nil, locale: nil) != nil
+        })
+        
+        if textField.text == "" {
+            self.ivClose.isHidden  = true
+        } else {
+            self.ivClose.isHidden  = false
+        }
+        
+        hideView()
+         cvData.reloadData()
+        
+        
+        
+    }
+    
     
     @IBAction func onClickBack(_ sender: Any) {
         doPopBAck()
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        shouldShowSearchResults = true
+        //shouldShowSearchResults = true
         
-        didChangeSearchText(searchText: tfSearch.text!)
+      //  didChangeSearchText(searchText: tfSearch.text!)
         return true
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        shouldShowSearchResults = false
-        cvData.reloadData()
+       // shouldShowSearchResults = false
+     //   cvData.reloadData()
         return view.endEditing(true)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        shouldShowSearchResults = false
+        //shouldShowSearchResults = false
     }
     
     func doGetEmployes() {
@@ -99,10 +141,12 @@ class ResourceEmployeeListVC: BaseVC {
                     
                     if response.status == "200" {
                         self.employees.append(contentsOf: response.employee)
+                        self.filteredArray = self.employees
                         self.cvData.reloadData()
-                        
+                         self.lbNoData.isHidden = true
                     }else {
                         self.showAlertMessage(title: "Alert", msg: response.message)
+                         self.lbNoData.isHidden = false
                     }
                 } catch {
                     print("parse error")
@@ -116,28 +160,41 @@ class ResourceEmployeeListVC: BaseVC {
         
         let index = sender.tag
         
-        print("clcicl" , index)
-        
-        let phone = employees[index].emp_mobile!
-        if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url)
-            } else {
-                UIApplication.shared.openURL(url)
+        if filteredArray[index].entry_status == "1" {
+            // avilabe
+            print("clcicl" , index)
+            
+            let phone = employees[index].emp_mobile!
+            if let url = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(url) {
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             }
+            
+        }else {
+            // not
+       showAlertMessage(title: "", msg: "Not Available")
+            
         }
+        
+        
+       
     }
     
-    func didChangeSearchText(searchText: String) {
+    
+    
+    @IBAction func onClickClearText(_ sender: Any) {
+        tfSearch.text = ""
         
-        filteredArray = employees.filter({ (modelEmployeeList) -> Bool in
-            // let searchChar = modelEmployeeList.emp_name
-            
-            return modelEmployeeList.emp_name.lowercased().contains(searchText.lowercased())
-            
-        })
+        filteredArray = employees
         cvData.reloadData()
+        view.endEditing(true)
+        ivClose.isHidden = true
+         hideView()
     }
+    
     
 }
 extension  ResourceEmployeeListVC :   UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
@@ -147,7 +204,6 @@ extension  ResourceEmployeeListVC :   UICollectionViewDelegate , UICollectionVie
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCell, for: indexPath) as! EmployeeListCell
         
-        if shouldShowSearchResults {
             cell.lbName.text = filteredArray[indexPath.row].emp_name
             
             Utils.setImageFromUrl(imageView: cell.ivImage, urlString: filteredArray[indexPath.row].emp_profile)
@@ -156,31 +212,13 @@ extension  ResourceEmployeeListVC :   UICollectionViewDelegate , UICollectionVie
             if filteredArray[indexPath.row].entry_status == "1" {
                 // avilabe
                 cell.lbStatus.text = "Available"
-                cell.viewStatus.backgroundColor = #colorLiteral(red: 0.5058823529, green: 0.7803921569, blue: 0.5176470588, alpha: 1)
+                cell.lbStatus.textColor = ColorConstant.green500
             }else {
                 // not
                 cell.lbStatus.text = "Not Available"
-                cell.viewStatus.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.4509803922, blue: 0.4509803922, alpha: 1)
+                cell.lbStatus.textColor = ColorConstant.red500
             }
-        } else {
-            cell.lbName.text = employees[indexPath.row].emp_name
-            
-            Utils.setImageFromUrl(imageView: cell.ivImage, urlString: employees[indexPath.row].emp_profile)
-            // cell.lbNumber.text =  myParkings[indexPath.row].vehicle_no
-            
-            if employees[indexPath.row].entry_status == "1" {
-                // avilabe
-                cell.lbStatus.text = "Available"
-                cell.viewStatus.backgroundColor = #colorLiteral(red: 0.5058823529, green: 0.7803921569, blue: 0.5176470588, alpha: 1)
-            }else {
-                // not
-                cell.lbStatus.text = "Not Available"
-                cell.viewStatus.backgroundColor = #colorLiteral(red: 0.8980392157, green: 0.4509803922, blue: 0.4509803922, alpha: 1)
-            }
-        }
-        
-        
-        
+      
         
         cell.bCall.tag = indexPath.row
         cell.bCall.addTarget(self, action: #selector(onClickOnCall(sender:)), for: .touchUpInside)
@@ -188,12 +226,8 @@ extension  ResourceEmployeeListVC :   UICollectionViewDelegate , UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if shouldShowSearchResults {
-            return filteredArray.count
-        } else {
-            return employees.count
-        }
+              return filteredArray.count
+       
         
     }
     

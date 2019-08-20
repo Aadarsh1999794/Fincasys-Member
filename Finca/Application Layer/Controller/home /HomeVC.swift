@@ -26,10 +26,21 @@ struct NotificationModel : Codable {
   let notification_status:String! // "notification_status" : "0",
   let user_notification_id:String! // "user_notification_id" : "1435",
   let notification_desc:String!  // "notification_desc" : "by Admin"
-    
-    
 }
 
+struct  ResponseMenuData : Codable {
+    let  status : String!// "status" : "200",
+    let  message : String!// "message" : "success."
+    let appmenu : [MenuModel]!
+}
+struct MenuModel : Codable {
+    let  menu_title : String!//" : "SOS",
+    let  app_menu_id : String!//" : "18",
+    let  menu_icon : String!//" : "https:\/\/www.fincasys.com\/\/img\/app_icon\/sos_graphic.png",
+    let  menu_click : String!//" : "SosFragment",
+    let  ios_menu_click : String!//" : "SOSVC",
+    let  menu_sequence : String!//" : "18"
+}
 
 
 class HomeVC: BaseVC {
@@ -46,7 +57,7 @@ class HomeVC: BaseVC {
     @IBOutlet weak var cvHeighConstraint: NSLayoutConstraint!
     var itemCell = "HomeScreenCvCell"
     var homeCellData = [menuData]()
-    
+     var appMenus = [MenuModel]()
     @IBOutlet weak var viewChatCount: UIView!
     @IBOutlet weak var lbChatCount: UILabel!
     @IBOutlet weak var viewNotiCount: UIView!
@@ -79,6 +90,21 @@ class HomeVC: BaseVC {
         doInintialRevelController(bMenu: bMenu)
         
         
+        doGetMenuData()
+        doLoadMenu()
+    }
+  func doLoadMenu()  {
+    
+    if UserDefaults.standard.data(forKey: "menuData") != nil {
+        if let data = UserDefaults.standard.data(forKey: "menuData"), let decoded = try? JSONDecoder().decode(ResponseMenuData.self, from: data){
+            
+            self.appMenus.append(contentsOf: decoded.appmenu)
+            self.cvHomeMenu.reloadData()
+            
+        }
+    }
+    
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -213,17 +239,51 @@ class HomeVC: BaseVC {
             }
         }
     }
+    
+    func doGetMenuData() {
+        // "read":"0" mean is unread massage
+        let params = ["key":ServiceNameConstants.API_KEY,
+                      "getAppMenu":"getAppMenu",
+                      "society_id":doGetLocalDataUser().society_id!]
+        
+        print("param" , params)
+        
+        let request = AlamofireSingleTon.sharedInstance
+        
+        request.requestPost(serviceName: ServiceNameConstants.appMenuController, parameters: params) { (json, error) in
+            
+            if json != nil {
+                
+                do {
+                    let response = try JSONDecoder().decode(ResponseMenuData.self, from:json!)
+                    if response.status == "200" {
+                        if let encoded = try? JSONEncoder().encode(response) {
+                            UserDefaults.standard.set(encoded, forKey: "menuData")
+                        }
+                        if self.appMenus.count > 0 {
+                            self.appMenus.removeAll()
+                        }
+                     self.appMenus.append(contentsOf: response.appmenu)
+                    self.cvHomeMenu.reloadData()
+                    }
+                } catch {
+                    print("parse error")
+                }
+            }
+        }
+    }
 }
 
 extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return homeCellData.count
+        return appMenus.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cvHomeMenu.dequeueReusableCell(withReuseIdentifier: itemCell, for: indexPath)as! HomeScreenCvCell
-        cell.lblHomeCell.text = homeCellData[indexPath.row].itemName
-        cell.imgHomeCell.image = UIImage(named: homeCellData[indexPath.row].itemImage)
+        cell.lblHomeCell.text = appMenus[indexPath.row].menu_title
+       // cell.imgHomeCell.image = UIImage(named: homeCellData[indexPath.row].itemImage)
+        Utils.setImageFromUrl(imageView: cell.imgHomeCell, urlString: appMenus[indexPath.row].menu_icon)
         setCardView(view: cell.viewMain)
         return cell
     }
@@ -232,11 +292,58 @@ extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollect
         self.viewWillLayoutSubviews()
     }
     
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        UIView.animate(withDuration: 0.1) {
+            if let cell = collectionView.cellForItem(at: indexPath) as? HomeScreenCvCell {
+                cell.viewMain.transform = .init(scaleX: 0.95, y: 0.95)
+                cell.contentView.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+            }
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        UIView.animate(withDuration: 0.1) {
+            if let cell = collectionView.cellForItem(at: indexPath) as? HomeScreenCvCell {
+                cell.viewMain.transform = .identity
+                cell.contentView.backgroundColor = .clear
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var   yourWidth : CGFloat!
+        if appMenus.count % 3 != 0 {
+            
+            if appMenus.count % 2 != 0 {
+                
+                if indexPath.row == appMenus.count-1 {
+                     yourWidth = collectionView.bounds.width/1.0
+                } else {
+                    yourWidth = collectionView.bounds.width/3.0
+                //     print("djsvd" , yourWidth)
+                }
+                
+            } else {
+                if indexPath.row == appMenus.count-1  {
+                
+                    yourWidth = collectionView.bounds.width/2.0
+                   
+                }else if indexPath.row == appMenus.count-2 {
+                     yourWidth = collectionView.bounds.width/2.0
+                } else {
+                    yourWidth = collectionView.bounds.width/3.0
+                    
+                  //  print("djsvd" , yourWidth)
+                }
+                
+            }
+            
+        } else {
+         yourWidth = collectionView.bounds.width/3.0
+            
+        }
         
-        let yourWidth = collectionView.bounds.width/3.0
         
-        return CGSize(width: yourWidth, height: yourWidth-2 )
+        return CGSize(width: yourWidth, height: 127-2 )
     }
     
     
@@ -260,7 +367,7 @@ extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollect
         }, completion: { _ in
             // here the animation is done
         })
-        doActionOnSelectedItem(SelectedItemId: homeCellData[indexPath.row].itemId)
+        doActionOnSelectedItem(SelectedItemId: appMenus[indexPath.row].ios_menu_click)
     }
     
     func setCardView(view : UIView){
@@ -271,18 +378,18 @@ extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollect
         view.layer.shadowRadius = 5
     }
     
-    func doActionOnSelectedItem(SelectedItemId : Int) {
+    func doActionOnSelectedItem(SelectedItemId : String) {
         switch (SelectedItemId) {
-        case 0:
+        case "BillsAndFundsVC":
             print("funds and bills")
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idBillsAndFundsVC")as! BillsAndFundsVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 1:
+        case "MemberVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idMemberVC")as! MemberVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 2:
+        case "VehicleMainTabVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idVehicleMainTabVC")as! VehicleMainTabVC
            // self.present(nextVC, animated: true, completion: nil)
             
@@ -291,69 +398,68 @@ extension HomeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollect
             revealViewController().pushFrontViewController(nextVC, animated: true)
             
             break;
-        case 3:
+        case "VisitorVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idVisitorVC")as! VisitorVC
             self.navigationController?.pushViewController(nextVC, animated: true )
             break
-        case 4:
+        case "ResourcesVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idResourcesVC")as! ResourcesVC
             self.navigationController?.pushViewController(nextVC, animated: true )
             break;
-        case 5:
+        case "EventsVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idEventsVC")as! EventsVC
             self.navigationController?.pushViewController(nextVC, animated: true )
             
             break;
-        case 6:
-            break;
-        case 7:
+        
+        case "NoticeVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idNoticeVC")as! NoticeVC
             self.navigationController?.pushViewController(nextVC, animated: true )
             break;
-        case 8:
+        case "FacilityMainTabVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idFacilityMainTabVC")as! FacilityMainTabVC
            // self.navigationController?.pushViewController(nextVC, animated: true )
            //  revealViewController().pushFrontViewController(nextVC, animated: true)
             self.navigationController?.pushViewController(nextVC, animated: true )
             break;
-        case 9:
+        case "ComplaintsVC":
             let nextvc = self.storyboard?.instantiateViewController(withIdentifier: "idComplaintsVC")as! ComplaintsVC
             self.navigationController?.pushViewController(nextvc, animated: true)
             break;
-        case 10:
+        case "PollingVc":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idPollingVc")as! PollingVc
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 11:
+        case "ElectionVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idElectionVC")as! ElectionVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 12:
+        case "BuildingDetailsVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idBuildingDetailsVC")as! BuildingDetailsVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 13:
+        case "EmergencyContactsVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idEmergencyContactsVC")as! EmergencyContactsVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 14:
+        case "ProfileVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idProfileVC")as! ProfileVC
             self.navigationController?.pushViewController(nextVC, animated: true )
             break;
-        case 15:
+        case "SOSVC":
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "idSOSVC") as! SOSVC
              self.navigationController?.pushViewController(nextVC, animated: true )
             break;
-        case 16:
+        case "GalleryVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idGalleryVC")as! GalleryVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
-        case 17:
+        case "DocumentsVC":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idDocumentsVC")as! DocumentsVC
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;
             
-        case 18:
+        case "BalanceSheetVc":
             let nextVC = self.storyboard?.instantiateViewController(withIdentifier: "idBalanceSheetVc")as! BalanceSheetVc
             self.navigationController?.pushViewController(nextVC, animated: true)
             break;

@@ -29,22 +29,32 @@ struct ModelEvent : Codable {
     let total_population : String! //" : "5",
     let event_image : String! //" : "https:\/\/www.fincasys.com\/img\/event_image\/holi.jpg",
     let event_description : String! //" : "festival of colors"
-
+    let booked_by : String!
     
 }
 
 class EventsVC: BaseVC {
-    
-
     @IBOutlet weak var bMenu: UIButton!
-    
     @IBOutlet weak var cvData: UICollectionView!
     @IBOutlet weak var viewChatCount: UIView!
     @IBOutlet weak var lbChatCount: UILabel!
     @IBOutlet weak var viewNotiCount: UIView!
     @IBOutlet weak var lbNotiCount: UILabel!
+    
+    @IBOutlet weak var viewUpcoming: UIView!
+    @IBOutlet weak var viewCompleted: UIView!
+   
+    
+    @IBOutlet weak var ivUpcoming: UIImageView!
+    @IBOutlet weak var ivCompleted: UIImageView!
+    
+    
+    
     let itemCell = "EventCell"
     var eventList = [ModelEvent]()
+     var eventComplitedList = [ModelEvent]()
+    var isUpcoming = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,9 +67,35 @@ class EventsVC: BaseVC {
         let inb = UINib(nibName: itemCell, bundle: nil)
         cvData.register(inb, forCellWithReuseIdentifier: itemCell)
         
-      //  doEvent()
         
+        ivUpcoming.setImageColor(color: .white)
+        ivCompleted.setImageColor(color: .white)
+      //  doEvent()
+        setSelectorEvent(selection: 1)
     
+    }
+    
+    func setSelectorEvent(selection:Int) {
+        
+        switch selection {
+        case 1:
+            //upcoming
+            viewUpcoming.backgroundColor = ColorConstant.colorP
+            viewCompleted.backgroundColor = ColorConstant.gary_60
+            isUpcoming = true
+            cvData.reloadData()
+            cvData.setContentOffset(.zero, animated: true)
+        case 2:
+            // compltetes
+            viewUpcoming.backgroundColor = ColorConstant.gary_60
+            viewCompleted.backgroundColor = ColorConstant.colorP
+             isUpcoming = false
+            cvData.reloadData()
+            cvData.setContentOffset(.zero, animated: true)
+        default:
+            break
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,8 +104,15 @@ class EventsVC: BaseVC {
         
         if eventList.count > 0 {
             eventList.removeAll()
+            eventComplitedList.removeAll()
             cvData.reloadData()
         }
+        if eventComplitedList.count > 0 {
+            eventComplitedList.removeAll()
+            cvData.reloadData()
+            
+        }
+            
         doEvent()
     }
     
@@ -97,7 +140,8 @@ class EventsVC: BaseVC {
         let params = ["key":apiKey(),
                       "getEventList":"getEventList",
                       "user_id":doGetLocalDataUser().user_id!,
-                      "society_id":doGetLocalDataUser().society_id!]
+                      "society_id":doGetLocalDataUser().society_id!,
+                      "unit_id":doGetLocalDataUser().unit_id!]
         
         
         print("param" , params)
@@ -115,7 +159,7 @@ class EventsVC: BaseVC {
                     
                     if response.status == "200" {
                         self.eventList.append(contentsOf: response.event)
-                    
+                    self.eventComplitedList.append(contentsOf: response.event_completed)
                         self.cvData.reloadData()
                         
                     }else {
@@ -139,6 +183,18 @@ class EventsVC: BaseVC {
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+    
+    
+    @IBAction func onClickCompleted(_ sender: Any) {
+        setSelectorEvent(selection: 2)
+        
+    }
+    
+    @IBAction func onClickUpcoming(_ sender: Any) {
+        setSelectorEvent(selection: 1)
+        
+    }
+    
 }
 
 
@@ -150,30 +206,52 @@ extension  EventsVC :   UICollectionViewDelegate , UICollectionViewDataSource , 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCell, for: indexPath) as! EventCell
       //  cell.lbAttending.text = ""
         
-       cell.lbTitle.text = eventList[indexPath.row].event_title
-          cell.lbDesc.text = eventList[indexPath.row].event_description
-       // cell.lbDate.text = eventList[indexPath.row].event_start_date
+        
+       if isUpcoming {
+        cell.lbTitle.text = eventList[indexPath.row].event_title
+        cell.lbDesc.text = eventList[indexPath.row].event_description
+        // cell.lbDate.text = eventList[indexPath.row].event_start_date
         
         if eventList[indexPath.row].going_person == "0" {
             cell.lbAttending.text = "Yes"
-             cell.lbAttending.textColor = UIColor(named: "green_a700")
+            cell.lbAttending.textColor = UIColor(named: "green_a700")
         } else {
-             cell.lbAttending.text = "NO"
-             cell.lbAttending.textColor = UIColor(named: "red_a700")
+            cell.lbAttending.text = "NO"
+            cell.lbAttending.textColor = UIColor(named: "red_a700")
             
         }
         
         
         //let date = eventList[indexPath.row].event_start_date
         let time = eventList[indexPath.row].event_start_date!.split{$0 == " "}.map(String.init)
-
-         cell.lbDate.text = time[1] + time[2]
-
+        
+        cell.lbDate.text = time[1] + time[2]
+        
         let date = convertDateFormater(time[0]).split{$0 == "-"}.map(String.init)
         
-       cell.lbDay.text = date[2]
-        cell.lbMonth.text = date[1]
+        cell.lbDay.text = date[2]
+        cell.lbMonth.text = date[1] + ","
         cell.lbYear.text = date[0]
+        
+        Utils.setImageFromUrl(imageView: cell.ivImageEvent, urlString: eventList[indexPath.row].event_image)
+       } else {
+        
+        cell.lbTitle.text = eventComplitedList[indexPath.row].event_title
+        
+        let time = eventComplitedList[indexPath.row].event_start_date!.split{$0 == " "}.map(String.init)
+        
+        
+        
+        let date = convertDateFormater(time[0]).split{$0 == "-"}.map(String.init)
+        
+        cell.lbDay.text = date[2]
+        cell.lbMonth.text = date[1] + ","
+        cell.lbYear.text = date[0]
+        
+                Utils.setImageFromUrl(imageView: cell.ivImageEvent, urlString: eventComplitedList[indexPath.row].event_image)
+        
+        }
+     
         
         
         return  cell
@@ -181,8 +259,12 @@ extension  EventsVC :   UICollectionViewDelegate , UICollectionViewDataSource , 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        
-        return eventList.count
+        if isUpcoming {
+             return eventList.count
+        }else {
+             return eventComplitedList.count
+        }
+       
     }
     
     
@@ -190,11 +272,15 @@ extension  EventsVC :   UICollectionViewDelegate , UICollectionViewDataSource , 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
         let yourWidth = collectionView.bounds.width
-        return CGSize(width: yourWidth - 5, height: 120)
+        return CGSize(width: yourWidth - 5, height: 230)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = storyboard?.instantiateViewController(withIdentifier: "idEventDetailsVC") as! EventDetailsVC
-       vc.eventModeL = eventList[indexPath.row]
+        if isUpcoming {
+            vc.eventModeL = eventList[indexPath.row]
+        } else {
+            vc.eventModeL = eventComplitedList[indexPath.row]
+        }
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -204,7 +290,7 @@ extension  EventsVC :   UICollectionViewDelegate , UICollectionViewDataSource , 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let date = dateFormatter.date(from: date)
-        dateFormatter.dateFormat = "yyyy-MMM-dd"
+        dateFormatter.dateFormat = "yyyy-MMMM-dd"
         return  dateFormatter.string(from: date!)
         
     }

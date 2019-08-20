@@ -20,8 +20,9 @@ class Utils: NSObject {
     }
     static func setImageFromUrl(imageView:UIImageView , urlString:String ) {
         // print("utils kf string : ==== "+urlString)
+        let url = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         imageView.kf.setImage(
-            with: URL(string: urlString),
+            with: URL(string: url!),
             placeholder: UIImage(named: "logo_dark"),
             options: [])
         {

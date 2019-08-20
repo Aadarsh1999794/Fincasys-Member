@@ -19,10 +19,18 @@ class EventCell: UICollectionViewCell {
     @IBOutlet weak var lbMonth: UILabel!
     @IBOutlet weak var lbYear: UILabel!
     
+    @IBOutlet weak var viewMain: UIView!
+    @IBOutlet weak var ivImageEvent: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        viewMain.layer.borderColor = UIColor.clear.cgColor
+        viewMain.layer.borderWidth = 0.5
+
+        viewMain.layer.cornerRadius = 4
+        viewMain.clipsToBounds = true
+        ivImageEvent.contentMode = .scaleAspectFill
     }
 
 }

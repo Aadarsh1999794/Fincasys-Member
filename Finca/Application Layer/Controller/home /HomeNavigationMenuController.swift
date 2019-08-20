@@ -28,7 +28,7 @@ class HomeNavigationMenuController: BaseVC {
     //    imgProfile.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     //    imgProfile.layer.cornerRadius = imgProfile.frame.height/2
         
-        Utils.setRoundImageWithBorder(imageView: imgProfile, color: UIColor.white)
+        Utils.setRoundImageWithBorder(imageView: imgProfile, color: ColorConstant.red500)
       
         let inb = UINib(nibName: itemCell, bundle: nil)
         tbvMenuList.register(inb, forCellReuseIdentifier: itemCell)

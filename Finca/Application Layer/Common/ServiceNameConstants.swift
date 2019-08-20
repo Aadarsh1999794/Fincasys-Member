@@ -52,6 +52,7 @@ public struct ServiceNameConstants {
     public static let check_login_status  = "check_login_status.php"
     
     public static let aboutController  = "aboutController.php"
+    public static let appMenuController  = "app_menu_controller.php"
     
     //
     

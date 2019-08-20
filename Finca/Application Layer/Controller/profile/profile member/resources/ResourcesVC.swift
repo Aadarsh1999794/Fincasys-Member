@@ -26,10 +26,14 @@ struct ModelEmployeeType : Codable {
 class ResourcesVC: BaseVC {
     
     @IBOutlet weak var cvData: UICollectionView!
+    @IBOutlet weak var ivSearch: UIImageView!
+    @IBOutlet weak var ivClose: UIImageView!
     
+    @IBOutlet weak var tfSearch: UITextField!
     let itemCell = "ResourceCell"
     
     var employee_Types = [ModelEmployeeType]()
+    var filteredArray = [ModelEmployeeType]()
     
     @IBOutlet weak var bMenu: UIButton!
     
@@ -38,23 +42,64 @@ class ResourcesVC: BaseVC {
     @IBOutlet weak var viewNotiCount: UIView!
     @IBOutlet weak var lbNotiCount: UILabel!
     
+    @IBOutlet weak var viewNoData: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         cvData.delegate = self
         cvData.dataSource = self
-        
+        viewNoData.isHidden = true
         let inb = UINib(nibName: itemCell, bundle: nil)
         cvData.register(inb, forCellWithReuseIdentifier: itemCell)
         
         // Do any additional setup after loading the view.
         doGetEmployes()
         doInintialRevelController(bMenu: bMenu)
+        ivSearch.setImageColor(color: ColorConstant.colorP)
+        ivClose.setImageColor(color: ColorConstant.colorP)
+         tfSearch.delegate = self
+        tfSearch.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: UIControl.Event.editingChanged)
+    ivClose.isHidden = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         loadNoti()
     }
+    
+    
+    @objc func textFieldDidChange(textField: UITextField) {
+        
+        //your code
+        
+            filteredArray = textField.text!.isEmpty ? employee_Types : employee_Types.filter({ (item:ModelEmployeeType) -> Bool in
+                
+                return item.emp_type_name.lowercased().range(of: textField.text!, options: .caseInsensitive, range: nil, locale: nil) != nil
+            })
+        
+        if textField.text == "" {
+            self.ivClose.isHidden  = true
+        } else {
+            self.ivClose.isHidden  = false
+        }
+        
+       hideView()
+        cvData.reloadData()
+       
+        
+        
+    }
+    func hideView() {
+        
+        if filteredArray.count == 0 {
+            viewNoData.isHidden = false
+            
+        } else {
+            viewNoData.isHidden = true
+            
+        }
+    }
+    
     func doGetEmployes() {
         showProgress()
         //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
@@ -78,10 +123,12 @@ class ResourcesVC: BaseVC {
                     
                     if response.status == "200" {
                         self.employee_Types.append(contentsOf: response.employee_Type)
+                        self.filteredArray = self.employee_Types
                         self.cvData.reloadData()
-                        
+                        self.viewNoData.isHidden = true
                         
                     }else {
+                         self.viewNoData.isHidden = false
                         self.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
@@ -121,6 +168,30 @@ class ResourcesVC: BaseVC {
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+
+    @IBAction func onClickClearText(_ sender: Any) {
+        tfSearch.text = ""
+        
+        filteredArray = employee_Types
+        cvData.reloadData()
+        view.endEditing(true)
+        ivClose.isHidden = true
+        hideView()
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+      ivClose.isHidden = false
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         ivClose.isHidden = true
+        return view.endEditing(true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+     }
+    
+   
 }
 extension  ResourcesVC :   UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout {
     
@@ -129,16 +200,20 @@ extension  ResourcesVC :   UICollectionViewDelegate , UICollectionViewDataSource
         
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCell, for: indexPath) as! ResourceCell
-        cell.lbTitle.text = employee_Types[indexPath.row].emp_type_name
-        Utils.setImageFromUrl(imageView: cell.ivImage, urlString: employee_Types[indexPath.row].emp_type_icon)
-        // cell.lbNumber.text =  myParkings[indexPath.row].vehicle_no
+        
+            cell.lbTitle.text = filteredArray[indexPath.row].emp_type_name
+            Utils.setImageFromUrl(imageView: cell.ivImage, urlString: filteredArray[indexPath.row].emp_type_icon)
+            
+        
+        
+         // cell.lbNumber.text =  myParkings[indexPath.row].vehicle_no
         return  cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        
-        return employee_Types.count
+            return filteredArray.count
+       
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -147,7 +222,7 @@ extension  ResourcesVC :   UICollectionViewDelegate , UICollectionViewDataSource
         
         //if
         let yourWidth = collectionView.bounds.width
-        return CGSize(width: yourWidth - 5, height: 60)
+        return CGSize(width: yourWidth - 5, height: 75)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -163,7 +238,9 @@ extension  ResourcesVC :   UICollectionViewDelegate , UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "idResourceEmployeeListVC") as! ResourceEmployeeListVC
-        vc.emp_type_id = employee_Types[indexPath.row].emp_type_id
+            vc.emp_type_id = filteredArray[indexPath.row].emp_type_id
+            
+       
         self.navigationController?.pushViewController(vc, animated: true)
         
         
