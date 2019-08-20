@@ -50,5 +50,6 @@ struct StringConstants {
     static let KEY_BACKGROUND_IMAGE = "backimage"
     
     static let KEY_USER_NAME = "userName"
-    
+    static let MEMBER_DETAILS_KEY = "memberDetails"
+    static let MENU_TIMELINE = "Timeline"
 }

@@ -22,7 +22,7 @@ class Utils: NSObject {
         // print("utils kf string : ==== "+urlString)
         imageView.kf.setImage(
             with: URL(string: urlString),
-            placeholder: UIImage(named: "logo_dark"),
+            placeholder: UIImage(named: "logo"),
             options: [])
         {
             result in

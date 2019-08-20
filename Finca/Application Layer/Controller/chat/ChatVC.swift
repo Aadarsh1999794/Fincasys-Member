@@ -17,21 +17,21 @@ struct ResponseChat : Codable {
 
 struct ChatModel : Codable {
     let msg_for:String!  //"msg_for" : "410",
-     let my_msg:String! //"my_msg" : "0",
+    let my_msg:String! //"my_msg" : "0",
     let msg_date:String! // "msg_date" : "2 hours ago",
-     let society_id:String! //"society_id" : "48",
+    let society_id:String! //"society_id" : "48",
     let msg_status:String! // "msg_status" : "0",
     let msg_by:String!  //"msg_by" : "411",
-     let chat_id:String! //"chat_id" : "110",
-     let msg_data:String!// "msg_data" : "hi",
-     let msg_delete:String!// "msg_delete" : "0"
+    let chat_id:String! //"chat_id" : "110",
+    let msg_data:String!// "msg_data" : "hi",
+    let msg_delete:String!// "msg_delete" : "0"
     
 }
 
 
 struct ResponseCommonMessage:Codable {
-      let message:String!//"message" : "chat added success.",
-     let status:String!// "status" : "200"
+    let message:String!//"message" : "chat added success.",
+    let status:String!// "status" : "200"
 }
 
 class ChatVC: BaseVC {
@@ -46,10 +46,10 @@ class ChatVC: BaseVC {
     @IBOutlet weak var tfMessage: UITextField!
     var itemCellRecieved = "RecievedCell"
     var itemCellSend = "SendChatCell"
-     var unitModelMember:UnitModelMember!
-     var chats = [ChatModel]()
-     var isFirsttime = true
-
+    var unitModelMember:UnitModelMember!
+    var chats = [ChatModel]()
+    var isFirsttime = true
+    
     @IBOutlet weak var viewChatMain: UIView!
     
     var isGateKeeper:Bool!
@@ -62,9 +62,9 @@ class ChatVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-    changeButtonImageColor(btn: bBack, image: "back", color: UIColor.white)
+        changeButtonImageColor(btn: bBack, image: "back", color: UIColor.white)
         
         tbvData.delegate = self
         tbvData.dataSource = self
@@ -79,14 +79,14 @@ class ChatVC: BaseVC {
         tbvData.register(inbRecieved, forCellReuseIdentifier: itemCellRecieved)
         Utils.setRoundImage(imageView: ivProfile)
         
-       lbNoData.isHidden = true
+        lbNoData.isHidden = true
         doGetChat(isRefresh: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-       
         
-          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         
         hideKeyBoardHideOutSideTouch()
         tfMessage.delegate = self
@@ -97,7 +97,7 @@ class ChatVC: BaseVC {
         
         
         initUI()
-     
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.doThisWhenNotify(notif:)), name: NSNotification.Name(rawValue: StringConstants.KEY_NOTIFIATION), object: nil)
         
@@ -108,20 +108,20 @@ class ChatVC: BaseVC {
         guard
             let aps =  notif.userInfo?["aps"] as? NSDictionary,
             let alert = aps["alert"] as? NSDictionary,
-           // let body = alert["body"] as? String
+            // let body = alert["body"] as? String
             
-             let title = alert["title"] as? String
-        
-       
-        
-        
-        else {
+            let title = alert["title"] as? String
+            
+            
+            
+            
+            else {
                 
                 
                 // handle any error here
                 return
         }
-       // reloadData(message_type: "1", msg: body)
+        // reloadData(message_type: "1", msg: body)
         
         if title == "Chat Message Received" {
             doGetChat(isRefresh: false)
@@ -130,21 +130,21 @@ class ChatVC: BaseVC {
         
     }
     
-   func initUI() {
-    if isGateKeeper {
-        Utils.setImageFromUrl(imageView: ivProfile, urlString: profile)
-        lbUserName.text = name
+    func initUI() {
+        if isGateKeeper {
+            Utils.setImageFromUrl(imageView: ivProfile, urlString: profile)
+            lbUserName.text = name
+            
+            
+        } else {
+            
+            Utils.setImageFromUrl(imageView: ivProfile, urlString: unitModelMember.user_profile_pic)
+            Utils.setRoundImage(imageView: ivProfile)
+            lbUserName.text = unitModelMember.user_full_name
+        }
         
         
-    } else {
-      
-        Utils.setImageFromUrl(imageView: ivProfile, urlString: unitModelMember.user_profile_pic)
-        Utils.setRoundImage(imageView: ivProfile)
-        lbUserName.text = unitModelMember.user_full_name
-    }
-    
-    
-    
+        
     }
     
     @objc func refresh(sender:AnyObject) {
@@ -197,8 +197,8 @@ class ChatVC: BaseVC {
                 do {
                     let response = try JSONDecoder().decode(ResponseChat.self, from:json!)
                     
-                 //   UserDefaults.standard.set(response.chat_status, forKey: StringConstants.CHAT_STATUS)
-                  //  UserDefaults.standard.set(response.read_status, forKey: StringConstants.READ_STATUS)
+                    //   UserDefaults.standard.set(response.chat_status, forKey: StringConstants.CHAT_STATUS)
+                    //  UserDefaults.standard.set(response.read_status, forKey: StringConstants.READ_STATUS)
                     
                     
                     if response.status == "200" {
@@ -212,11 +212,11 @@ class ChatVC: BaseVC {
                         self.tbvData.reloadData()
                         self.scrollToBottom()
                         self.isFirsttime = false
-                       
+                        
                         
                     }else {
                         self.lbNoData.isHidden = false
-                       // self.showAlertMessage(title: "Alert", msg: response.message)
+                        // self.showAlertMessage(title: "Alert", msg: response.message)
                     }
                 } catch {
                     print("parse error")
@@ -232,7 +232,7 @@ class ChatVC: BaseVC {
         var   paramsSend  =  [String:String]()
         
         if isGateKeeper {
-           print("is gate keeper")
+            print("is gate keeper")
             paramsSend = ["key":apiKey(),
                           "addChat":"addChat",
                           "msg_by":doGetLocalDataUser().user_id!,
@@ -242,7 +242,7 @@ class ChatVC: BaseVC {
                           "society_id":doGetLocalDataUser().society_id!,
                           "sent_to":"1"]
         }else {
-             print("is member")
+            print("is member")
             paramsSend = ["key":apiKey(),
                           "addChat":"addChat",
                           "msg_by":doGetLocalDataUser().user_id!,
@@ -265,10 +265,10 @@ class ChatVC: BaseVC {
                     
                     
                     if response.status == "200" {
-                       /* self.chats.append(ChatModel(msg_for: "",my_msg: "1",msg_date: "",society_id: "",msg_status: "",msg_by: "",chat_id: "",msg_data: self.tfMessage.text!,msg_delete: ""))
-                        self.tbvData.reloadData()
-                        self.tfMessage.text = ""
-                        self.scrollToBottom()*/
+                        /* self.chats.append(ChatModel(msg_for: "",my_msg: "1",msg_date: "",society_id: "",msg_status: "",msg_by: "",chat_id: "",msg_data: self.tfMessage.text!,msg_delete: ""))
+                         self.tbvData.reloadData()
+                         self.tfMessage.text = ""
+                         self.scrollToBottom()*/
                         self.tfMessage.text = ""
                         self.doGetChat(isRefresh: false)
                         
@@ -282,7 +282,7 @@ class ChatVC: BaseVC {
         }
         
     }
-
+    
     @IBAction func onClickBack(_ sender: Any) {
         doPopBAck()
     }
@@ -305,15 +305,15 @@ class ChatVC: BaseVC {
         let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
         let keyboardHeight = keyboardRectangle.height
-      //  self.view.frame.origin.y = -keyboardHeight // Move view 150 points upward
+        //  self.view.frame.origin.y = -keyboardHeight // Move view 150 points upward
         
-         bottomConstEditView.constant = keyboardHeight
+        bottomConstEditView.constant = keyboardHeight
     }
     @objc func keyboardWillHide(sender: NSNotification) {
-      //  self.view.frame.origin.y = 0 // Move view to original position
+        //  self.view.frame.origin.y = 0 // Move view to original position
         bottomConstEditView.constant = 8.0
     }
-  
+    
 }
 extension ChatVC:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

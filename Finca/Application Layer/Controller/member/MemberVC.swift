@@ -162,25 +162,73 @@ class MemberVC: BaseVC {
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
+    
+    
     @objc func clickFloor(_ notification: NSNotification) {
         
         let data =  notification.userInfo?["data"] as? UnitModelMember
         
         if data?.user_id != doGetLocalDataUser().user_id {
             if data?.unit_status == "1" || data?.unit_status == "3" || data?.unit_status == "5" {
-                let vc = storyboard?.instantiateViewController(withIdentifier: "idMemberDetailVC") as! MemberDetailVC
-                vc.unitModelMember = data
-                self.navigationController?.pushViewController(vc, animated: true)
+               
+                if let encoded = try? JSONEncoder().encode(data) {
+                    UserDefaults.standard.set(encoded, forKey: StringConstants.MEMBER_DETAILS_KEY)
+                }
+                doCallApiForMemberDetails(selected_residentID: data?.user_id)
                 
                 //  revealViewController().pushFrontViewController(vc, animated: true)
-                
             }
-            
         }
-        
-        
     }
-    
+    func doCallApiForMemberDetails(selected_residentID:String!){
+        showProgress()
+        //let device_token = UserDefaults.standard.string(forKey: ConstantString.KEY_DEVICE_TOKEN)
+        let params = ["key":apiKey(),
+                      "getProfileData":"getProfileData",
+                      "user_id":selected_residentID!]
+        
+        
+        print("param" , params)
+        
+        let requrest = AlamofireSingleTon.sharedInstance
+        
+        
+        requrest.requestPost(serviceName: NetworkAPI.memberDetailController, parameters: params) { (json, error) in
+            
+            if json != nil {
+                print(json as Any)
+                self.hideProgress()
+                do {
+                    let response = try JSONDecoder().decode(MemberDetailResponse.self, from:json!)
+                    if response.status == "200" {
+                        
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "idMemberDetailVC") as! MemberDetailVC
+                        vc.memMainResponse = response
+                        self.navigationController?.pushViewController(vc, animated: true)
+//                        self.emergencyDetails.append(contentsOf: response.emergency)
+//                        self.parkingDetails.append(contentsOf: response.myParking)
+//                        self.familyMemberDetails.append(contentsOf: response.member)
+//                        self.memResponse = response
+//                        self.lbName.text = response.userFullName
+//                        self.lblTotalParkingCount.text = "\(response.myParking.count)"
+//                        self.lblFamilyMemberCount.text = "\(response.member.count)"
+//                        Utils.setImageFromUrl(imageView: self.ivProfile, urlString: response.userProfilePic)
+//                        Utils.setRoundImageWithBorder(imageView: self.ivProfile, color: UIColor.white)
+//                        if response.userType == "0"{
+//                            self.lblResidentType.text = "Owner"
+//                        }else if response.userType == "1"{
+//                            self.lblResidentType.text = "Tenant"
+//                        }
+//                        self.doCreateActionSheetForFamilyMembers()
+                    }else {
+                        
+                    }
+                } catch {
+                    print("parse error")
+                }
+            }
+        }
+    }
     func selectItem(index:Int) {
         
         //blocks
@@ -273,7 +321,43 @@ extension MemberVC :  UICollectionViewDelegate , UICollectionViewDataSource , UI
         if collectionView == cvUnits {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: itemCellFloor, for: indexPath) as! FloorSelectionCell
             
-            cell.lbTitle.text = floors[indexPath.row].floor_name
+//            cell.lbTitle.text =
+            let floor = floors[indexPath.row].floor_name
+            
+            let floorNoText = ""
+            if  floors[indexPath.row].floor_name.contains("floor") {
+                let splited = floor?.components(separatedBy: " ")
+                let number = splited?[0]
+                let text = splited?[1]
+                print(number)
+                print(text)
+//                if splited[0].equalsIgnoreCase("1") {
+//                    floorNoText = "1st Floor";
+//                } else if splited[0].equalsIgnoreCase("2") {
+//                    floorNoText = "2nd Floor";
+//                } else if splited[0].equalsIgnoreCase("3") {
+//                    floorNoText = "3rd Floor";
+//                } else if splited[0].equalsIgnoreCase("12") {
+//                    floorNoText = "12th Floor";
+//                }else if splited[0].equalsIgnoreCase("13") {
+//                    floorNoText = "13th Floor";
+//                } else if (splited[0].length() >= 2) {
+//                    String str3 = String.valueOf(splited[0].charAt(1));
+//                    if (String.valueOf(splited[0].charAt(1)).equalsIgnoreCase("3")) {
+//                        floorNoText = String.valueOf(splited[0].charAt(0)) + String.valueOf(splited[0].charAt(1)) + "rd Floor";
+//                    }
+//                    if (String.valueOf(splited[0].charAt(1)).equalsIgnoreCase("2")) {
+//                        floorNoText = String.valueOf(splited[0].charAt(0)) + String.valueOf(splited[0].charAt(1)) + "nd Floor";
+//                    }
+//                } else {
+//                    floorNoText = splited[0] + "th Floor";
+//                }
+//                myViewHolder.floor.setText("" + floorNoText);
+//            } else {
+//                myViewHolder.floor.setText("" + list.get(i).getFloorName());
+            }
+//
+
             cell.doSetDataMember(units: floors[indexPath.row].units, isMember: true)
 //            cell.viewMain.addDashedBorder()
             return cell

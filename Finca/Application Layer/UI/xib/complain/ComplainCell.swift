@@ -16,10 +16,20 @@ class ComplainCell: UITableViewCell {
     @IBOutlet weak var lblCmpDesc: UILabel!
     @IBOutlet weak var lblCmpAdminMsg: UILabel!
     @IBOutlet weak var viewBtnEdit: UIView!
+     @IBOutlet weak var viewBtnDelete: UIView!
     @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var editBtn: UIButton!
+    @IBOutlet weak var viewMain: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
+        lblCmpStatus.layer.cornerRadius = 5
+        lblCmpStatus.layer.masksToBounds = true
+        
+        viewMain.layer.shadowRadius = 3
+        viewMain.layer.shadowOffset = CGSize.zero
+        viewMain.layer.shadowOpacity = 0.3
+        viewMain.layer.cornerRadius = 5
+//        viewMain.layer.masksToBounds = true
         // Initialization code
     }
 
